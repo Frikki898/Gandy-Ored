@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class OgreController : MonoBehaviour
 {
     public float sideWaysSpeed;
     public GameObject gnome;
     private Rigidbody2D rigid;
     public float jumpForce;
+    public bool isGrounded;
 
     // Start is called before the first frame update
     void Start()
@@ -19,6 +21,7 @@ public class OgreController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Debug.Log("ASDF");
         if (Input.GetKey(KeyCode.A))
         {
             this.transform.position += Vector3.left * Time.deltaTime * sideWaysSpeed;
@@ -27,9 +30,22 @@ public class OgreController : MonoBehaviour
         {
             this.transform.position += Vector3.right * Time.deltaTime * sideWaysSpeed;
         }
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKeyDown(KeyCode.W) && isGrounded)
         {
+            isGrounded = false;
             rigid.AddForce(Vector2.up * jumpForce);
+
+            Debug.Log(isGrounded);
         }
+    }
+
+    void OnCollisionStay2D()
+    {
+        isGrounded = true;
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        isGrounded = false;
     }
 }
