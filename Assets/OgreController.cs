@@ -10,6 +10,7 @@ public class OgreController : MonoBehaviour
     private Rigidbody2D rigid;
     public float jumpForce;
     public bool isGrounded;
+    public float movementSpeed;
 
     // Start is called before the first frame update
     void Start()
@@ -24,17 +25,16 @@ public class OgreController : MonoBehaviour
         //Debug.Log("ASDF");
         if (Input.GetKey(KeyCode.A))
         {
-            this.transform.position += Vector3.left * Time.deltaTime * sideWaysSpeed;
+            rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed;
         }
         if (Input.GetKey(KeyCode.D))
         {
-            this.transform.position += Vector3.right * Time.deltaTime * sideWaysSpeed;
+            rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed;
         }
         if (Input.GetKeyDown(KeyCode.W) && isGrounded)
         {
             isGrounded = false;
-            rigid.AddForce(Vector2.up * jumpForce);
-
+            rigid.velocity += Vector2.up * jumpForce;
             Debug.Log(isGrounded);
         }
     }
