@@ -11,6 +11,7 @@ public class OgreController : MonoBehaviour
     public float jumpForce;
     public bool isGrounded;
     public float movementSpeed;
+    private GameObject touchingBox = null;
 
     // Start is called before the first frame update
     void Start()
@@ -37,15 +38,59 @@ public class OgreController : MonoBehaviour
             rigid.velocity += Vector2.up * jumpForce;
             Debug.Log(isGrounded);
         }
+        if(Input.GetKeyDown(KeyCode.E))
+        {
+            findClosestBox();
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.GetComponent<BoxScript>() != null)
+        {
+            Debug.Log("Touching a box");
+
+            Vector3 center = collision.collider.bounds.center;
+            Vector3 contactPoint = collision.contacts[0].point;
+
+            Debug.Log(center.x + collision.gameObject.transform.localScale.x / 2);
+
+            if (contactPoint.x >= center.x + collision.gameObject.transform.localScale.x/2)
+            {
+                touchingBox = collision.gameObject;
+                Debug.Log("To the right");
+            }
+            if (contactPoint.x <= center.x - collision.gameObject.transform.localScale.x / 2)
+            {
+                touchingBox = collision.gameObject;
+                Debug.Log("To the left");
+            }
+        }
+    }
+
+    void OnCollisionExit2D(Collision2D collision)
+    {
+        isGrounded = false;
+        if (collision.gameObject.GetComponent<BoxScript>() != null)
+        {
+            Debug.Log("stopped touching box");
+            touchingBox = null;
+        }
+    }
+
+    public void findClosestBox()
+    {
+        BoxScript[] boxes = (BoxScript[])GameObject.FindObjectsOfType(typeof(BoxScript));
+        Debug.Log(boxes.Length);
+        foreach(BoxScript b in boxes)
+        {
+            var distance = Vector3.Distance(b.GetComponent<Transform>().position, this.transform.position);
+            Debug.Log(distance);
+        }
     }
 
     void OnCollisionStay2D()
     {
         isGrounded = true;
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        isGrounded = false;
     }
 }
