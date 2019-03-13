@@ -143,4 +143,5 @@ MonoBehaviour:
   gnome: {fileID: 0}
   jumpForce: 80
   isGrounded: 1
-  movementSpeed: 120
+  runSpeed: 120
+  carrySpeed: 75
