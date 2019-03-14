@@ -17,6 +17,8 @@ public class BoxScript : MonoBehaviour
 
     public BoxTypes BoxType;
 
+    public bool beingHeld = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,5 +30,18 @@ public class BoxScript : MonoBehaviour
     {
         //this.transform.localPosition = new Vector3(1, 1, 1);
         //rb.velocity = Vector3.zero;
+    }
+
+    private void LateUpdate()
+    {
+        //rb.velocity = Vector3.zero;
+    }
+
+    void OnCollisionStay2D()
+    {
+        if(!beingHeld)
+        {
+            rb.mass = 10;
+        }
     }
 }

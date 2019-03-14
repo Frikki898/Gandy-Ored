@@ -283,7 +283,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 10
   m_LinearDrag: 13
   m_AngularDrag: 0.05
   m_GravityScale: 25
@@ -306,6 +306,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 0}
   BoxType: 0
+  beingHeld: 0
 --- !u!61 &361819191
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -385,7 +386,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 361819188}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4, y: -6.66, z: 0}
+  m_LocalPosition: {x: 15.27, y: -6.66, z: 0}
   m_LocalScale: {x: 3.729375, y: 3, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -648,8 +649,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1586739583}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -10.29, y: -11.7, z: 0}
-  m_LocalScale: {x: 16.699923, y: 3, z: 1}
+  m_LocalPosition: {x: 0, y: -4.69, z: 0}
+  m_LocalScale: {x: 20, y: 3, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
@@ -737,7 +738,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 10
   m_LinearDrag: 13
   m_AngularDrag: 0.05
   m_GravityScale: 25
@@ -760,6 +761,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 0}
   BoxType: 0
+  beingHeld: 0
 --- !u!1001 &5086561036526697279
 PrefabInstance:
   m_ObjectHideFlags: 0
