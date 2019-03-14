@@ -46,18 +46,28 @@ public class OgreController : MonoBehaviour
             //rigid.AddForce(Vector2.left * Time.deltaTime * movementSpeed * 100);
             if(touchingBox != null)
             {
-                touchingBox.GetComponent<Rigidbody2D>().velocity += Vector2.left * Time.deltaTime * movementSpeed;
+                touchingBox.GetComponent<Rigidbody2D>().velocity += Vector2.left * Time.deltaTime * movementSpeed/2;
             }
-            rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed;
+            rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed/2;
+            if (touchingBox != null)
+            {
+                touchingBox.GetComponent<Rigidbody2D>().velocity += Vector2.left * Time.deltaTime * movementSpeed/2;
+            }
+            rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed/2;
         }
         if (Input.GetKey(KeyCode.D))
         {
             //rigid.AddForce(Vector2.right * Time.deltaTime * movementSpeed * 100);
             if (touchingBox != null)
             {
-                touchingBox.GetComponent<Rigidbody2D>().velocity += Vector2.right * Time.deltaTime * movementSpeed;
+                touchingBox.GetComponent<Rigidbody2D>().velocity += Vector2.right * Time.deltaTime * movementSpeed/2;
             }
-            rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed;
+            rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed/2;
+            if (touchingBox != null)
+            {
+                touchingBox.GetComponent<Rigidbody2D>().velocity += Vector2.right * Time.deltaTime * movementSpeed/2;
+            }
+            rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed/2;
         }
         if (Input.GetKeyDown(KeyCode.W) && isGrounded)
         {
@@ -76,22 +86,19 @@ public class OgreController : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        //TODO FIX THIS SHIT
         if (collision.gameObject.GetComponent<BoxScript>() != null)
         {
             Debug.Log("Touching a box");
 
             Vector3 center = collision.collider.bounds.center;
             Vector3 contactPoint = collision.contacts[0].point;
-
-            //Debug.Log(center.x + collision.gameObject.transform.localScale.x / 2);
-
-            if (contactPoint.x >= center.x + collision.gameObject.transform.localScale.x/2)
+            
+            if (contactPoint.x > center.x + collision.gameObject.transform.localScale.x / 2)
             {
                 touchingBox = collision.gameObject;
                 Debug.Log("To the right");
             }
-            if (contactPoint.x <= center.x - collision.gameObject.transform.localScale.x / 2)
+            if (contactPoint.x < center.x - collision.gameObject.transform.localScale.x / 2)
             {
                 touchingBox = collision.gameObject;
                 Debug.Log("To the left");
@@ -104,8 +111,11 @@ public class OgreController : MonoBehaviour
         isGrounded = false;
         if (collision.gameObject.GetComponent<BoxScript>() != null)
         {
-            Debug.Log("stopped touching box");
-            touchingBox = null;
+            if(!holdingABox)
+            {
+                Debug.Log("stopped touching box");
+                touchingBox = null;
+            }
         }
     }
 
