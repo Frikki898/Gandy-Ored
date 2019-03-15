@@ -14,7 +14,7 @@ public class OgreController : MonoBehaviour
     public float runSpeed;
     public float carrySpeed;
     private BoxScript touchingBox = null;
-    private bool holdingABox = false;
+    private BoxScript holdingBox = null;
 
     // Start is called before the first frame update
     void Start()
@@ -30,41 +30,37 @@ public class OgreController : MonoBehaviour
     {
         if(touchingBox != null)
         {
-            if(Mathf.Abs(touchingBox.GetComponent<Rigidbody2D>().velocity.y) >= 0.01)
+            if(holdingBox != null)
             {
-                movementSpeed = runSpeed;
-                holdingABox = false;
-                touchingBox.transform.parent = null;
-                touchingBox.rb.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX;
-                touchingBox.beingHeld = false;
+                if (Mathf.Abs(holdingBox.GetComponent<Rigidbody2D>().velocity.y) >= 0.01)
+                {
+                    movementSpeed = runSpeed;
+                    holdingBox.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+                    holdingBox.beingHeld = false;
+                    holdingBox = null;
+                }
             }
         }
 
         if (Input.GetKey(KeyCode.A))
         {
-            if(touchingBox != null)
+            if(holdingBox != null)
             {
-                touchingBox.rb.velocity += Vector2.left * Time.deltaTime * movementSpeed;
+                holdingBox.rb.velocity += Vector2.left * Time.deltaTime * movementSpeed;
             }
             rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed;
         }
         if (Input.GetKey(KeyCode.D))
         {
-            //rigid.AddForce(Vector2.right * Time.deltaTime * movementSpeed * 100);
-            if (touchingBox != null)
+            if (holdingBox != null)
             {
-                touchingBox.rb.velocity += Vector2.right * Time.deltaTime * movementSpeed;
+                holdingBox.rb.velocity += Vector2.right * Time.deltaTime * movementSpeed;
             }
             rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed;
-            /*if (touchingBox != null)
-            {
-                touchingBox.GetComponent<Rigidbody2D>().velocity += Vector2.right * Time.deltaTime * movementSpeed/2;
-            }
-            rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed/2;*/
         }
         if (Input.GetKeyDown(KeyCode.W) && isGrounded)
         {
-            if(!holdingABox)
+            if(holdingBox == null)
             {
                 isGrounded = false;
                 rigid.velocity += Vector2.up * jumpForce;
@@ -104,11 +100,8 @@ public class OgreController : MonoBehaviour
         isGrounded = false;
         if (collision.gameObject.GetComponent<BoxScript>() != null)
         {
-            if(!holdingABox)
-            {
-                Debug.Log("stopped touching box");
-                touchingBox = null;
-            }
+            Debug.Log("stopped touching box");
+            touchingBox = null;
         }
     }
 
@@ -117,10 +110,10 @@ public class OgreController : MonoBehaviour
 
         if(touchingBox != null)
         {
-            if(!holdingABox)
+            if(holdingBox == null)
             {
                 movementSpeed = carrySpeed;
-                holdingABox = true;
+                holdingBox = touchingBox;
                 touchingBox.transform.parent = this.transform;
                 touchingBox.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
                 touchingBox.beingHeld = true;
@@ -129,10 +122,10 @@ public class OgreController : MonoBehaviour
             else
             {
                 movementSpeed = runSpeed;
-                holdingABox = false;
+                holdingBox = null;
                 touchingBox.transform.parent = null;
-                touchingBox.rb.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX;
                 touchingBox.beingHeld = false;
+                touchingBox.rb.mass = 10;
             }
         }
     }

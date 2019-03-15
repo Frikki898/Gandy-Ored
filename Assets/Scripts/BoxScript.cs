@@ -39,9 +39,10 @@ public class BoxScript : MonoBehaviour
 
     void OnCollisionStay2D()
     {
-        if(!beingHeld)
+        if (!beingHeld)
         {
             rb.mass = 10;
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX;
         }
     }
 }
