@@ -13,7 +13,7 @@ public class OgreController : MonoBehaviour
     private float movementSpeed;
     public float runSpeed;
     public float carrySpeed;
-    private GameObject touchingBox = null;
+    private BoxScript touchingBox = null;
     private bool holdingABox = false;
 
     // Start is called before the first frame update
@@ -23,13 +23,11 @@ public class OgreController : MonoBehaviour
         rigid = this.GetComponent<Rigidbody2D>();
         movementSpeed = runSpeed;
         rigid.centerOfMass = Vector3.zero;
-        //rigid.inertia = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log()
         if(touchingBox != null)
         {
             if(Mathf.Abs(touchingBox.GetComponent<Rigidbody2D>().velocity.y) >= 0.01)
@@ -37,37 +35,32 @@ public class OgreController : MonoBehaviour
                 movementSpeed = runSpeed;
                 holdingABox = false;
                 touchingBox.transform.parent = null;
-                touchingBox.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX;
+                touchingBox.rb.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX;
+                touchingBox.beingHeld = false;
             }
         }
 
         if (Input.GetKey(KeyCode.A))
         {
-            //rigid.AddForce(Vector2.left * Time.deltaTime * movementSpeed * 100);
             if(touchingBox != null)
             {
-                touchingBox.GetComponent<Rigidbody2D>().velocity += Vector2.left * Time.deltaTime * movementSpeed/2;
+                touchingBox.rb.velocity += Vector2.left * Time.deltaTime * movementSpeed;
             }
-            rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed/2;
-            if (touchingBox != null)
-            {
-                touchingBox.GetComponent<Rigidbody2D>().velocity += Vector2.left * Time.deltaTime * movementSpeed/2;
-            }
-            rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed/2;
+            rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed;
         }
         if (Input.GetKey(KeyCode.D))
         {
             //rigid.AddForce(Vector2.right * Time.deltaTime * movementSpeed * 100);
             if (touchingBox != null)
             {
-                touchingBox.GetComponent<Rigidbody2D>().velocity += Vector2.right * Time.deltaTime * movementSpeed/2;
+                touchingBox.rb.velocity += Vector2.right * Time.deltaTime * movementSpeed;
             }
-            rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed/2;
-            if (touchingBox != null)
+            rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed;
+            /*if (touchingBox != null)
             {
                 touchingBox.GetComponent<Rigidbody2D>().velocity += Vector2.right * Time.deltaTime * movementSpeed/2;
             }
-            rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed/2;
+            rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed/2;*/
         }
         if (Input.GetKeyDown(KeyCode.W) && isGrounded)
         {
@@ -95,12 +88,12 @@ public class OgreController : MonoBehaviour
             
             if (contactPoint.x > center.x + collision.gameObject.transform.localScale.x / 2)
             {
-                touchingBox = collision.gameObject;
+                touchingBox = collision.gameObject.GetComponent<BoxScript>();
                 Debug.Log("To the right");
             }
             if (contactPoint.x < center.x - collision.gameObject.transform.localScale.x / 2)
             {
-                touchingBox = collision.gameObject;
+                touchingBox = collision.gameObject.GetComponent<BoxScript>();
                 Debug.Log("To the left");
             }
         }
@@ -129,22 +122,18 @@ public class OgreController : MonoBehaviour
                 movementSpeed = carrySpeed;
                 holdingABox = true;
                 touchingBox.transform.parent = this.transform;
-                touchingBox.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
-                //touchingBox.GetComponent<Rigidbody2D>().mass = 2;
-                //Destroy(touchingBox.GetComponent<Rigidbody2D>());
+                touchingBox.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+                touchingBox.beingHeld = true;
+                touchingBox.rb.mass = 1;
             }
             else
             {
                 movementSpeed = runSpeed;
                 holdingABox = false;
                 touchingBox.transform.parent = null;
-                touchingBox.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX;
-                //touchingBox.GetComponent<Rigidbody2D>().mass = 100;
-                //touchingBox.AddComponent<Rigidbody2D>();
-                //touchingBox.GetComponent<Rigidbody2D>().collisionDetectionMode = CollisionDetectionMode2D.Continuous;
-                //touchingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
+                touchingBox.rb.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX;
+                touchingBox.beingHeld = false;
             }
-            
         }
     }
 
