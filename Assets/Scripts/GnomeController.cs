@@ -37,12 +37,22 @@ public class GnomeController : MonoBehaviour
         if(Input.GetKey(KeyCode.UpArrow)) {
             if(holdingABox) {
                 floatingBox = touchingBox;
+                floatingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
                 touchingBox.GetComponent<Rigidbody2D>().velocity += Vector2.up * Time.deltaTime * levitationSpeed;
             }
         }
         if(Input.GetKey(KeyCode.DownArrow)) {
             if(holdingABox) {
+                if (floatingBox)
+                {
+                    floatingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;    
+                }
                 touchingBox.GetComponent<Rigidbody2D>().velocity += Vector2.down * Time.deltaTime * levitationSpeed;
+            }
+        }
+        if (floatingBox) {
+            if(!Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.UpArrow)) {
+                floatingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;    
             }
         }
         if(Input.GetKeyDown(KeyCode.RightControl))
@@ -69,6 +79,8 @@ public class GnomeController : MonoBehaviour
             {
                 if(floatingBox) {
                     floatingBox.GetComponent<Rigidbody2D>().gravityScale = 25;
+                    floatingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;  
+                    floatingBox = null;  
                 }
                 holdingABox = true;
                 touchingBox.GetComponent<Rigidbody2D>().gravityScale = 0;
@@ -85,7 +97,10 @@ public class GnomeController : MonoBehaviour
         }
         else {
             if(floatingBox) {
-                    floatingBox.GetComponent<Rigidbody2D>().gravityScale = 25;
+                floatingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;   
+                floatingBox.GetComponent<Rigidbody2D>().gravityScale = 25;
+                floatingBox.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX;
+                floatingBox = null;     
             }
         }
     }

@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 6405140939755821726}
   - component: {fileID: 6405140939755821727}
   - component: {fileID: 6405140939755821724}
-  - component: {fileID: 6405140939755821725}
   m_Layer: 0
   m_Name: Gnome
   m_TagString: Untagged
@@ -127,18 +126,3 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 0.98}
   m_EdgeRadius: 0
---- !u!114 &6405140939755821725
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6405140939755821730}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e1ef14405b00724abe24d25d440050d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ogre: {fileID: 5086561036955560429, guid: 76c3cdc25c1094047b1f371381825ac9, type: 3}
-  movementSpeed: 10
-  levitationSpeed: 100
