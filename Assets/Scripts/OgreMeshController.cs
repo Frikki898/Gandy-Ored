@@ -8,13 +8,14 @@ public class OgreMeshController : MonoBehaviour
 	public GameObject gnome;
 
 	public float walkSpeed = 65;
-	public float runSpeed = 120;
+	public float runSpeed = 65;
 	public float jumpForce = 80;
-	//public float smoothTurnTime = 0.2f;
+	//public float smoothTurnTime = 0.4f;
 
 	public bool isGrounded;
 
 	private float turnVelocity;
+	private float animSpeed = 1;
 	private float movementSpeed;
 
 	private bool holdingABox = false;
@@ -22,36 +23,68 @@ public class OgreMeshController : MonoBehaviour
 
 	private Animator animator = null;
 	private BoxScript touchingBox = null;
+	private BoxScript holdingBox = null;
 	private Rigidbody2D rb;
 
 	// Start is called before the first frame update
 	void Start()
 	{
-		Physics2D.IgnoreCollision(gnome.GetComponent<Collider2D>(), this.GetComponent<Collider2D>());
 		transform.eulerAngles = new Vector2(0, 100);
+
+		Physics2D.IgnoreCollision(gnome.GetComponent<Collider2D>(), this.GetComponent<Collider2D>());
 		animator = GetComponent<Animator>();
 		movementSpeed = runSpeed;
 
 		rb = this.GetComponent<Rigidbody2D>();
-		rb.centerOfMass = Vector2.zero;
+		rb.centerOfMass = Vector3.zero;
     }
 
     // Update is called once per frame
     void Update()
     {
+
+		Debug.Log(touchingBox);
+		if (touchingBox != null)
+		{
+			if (holdingBox != null)
+			{
+				if (Mathf.Abs(holdingBox.GetComponent<Rigidbody2D>().velocity.y) >= 0.01)
+				{
+					movementSpeed = runSpeed;
+					holdingBox.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+					holdingBox.beingHeld = false;
+					holdingBox = null;
+				}
+			}
+		}
+
 		if (Input.GetKey(KeyCode.A))
 		{
 			if (!facingLeft)
 			{
-				facingLeft = true;
-				rb.transform.eulerAngles = new Vector2(0, -80);
+				if (holdingBox != null)
+				{
+					holdingBox.rb.velocity += Vector2.left * Time.deltaTime * movementSpeed;
+					animSpeed = 0.6f;
+				}
+				else
+				{
+					facingLeft = true;
+					rb.transform.eulerAngles = new Vector2(0, -80);
+					animSpeed = 1f;
+				}
 			}
 			
 			rb.velocity += Vector2.left  * Time.deltaTime * movementSpeed;
 
 			if (isGrounded)
 			{
-				animator.SetFloat("Speed", 1);
+				animator.SetFloat("Speed", animSpeed);
+			}
+			else
+			{
+				//TODO: in-air and falling animation
+				animator.SetFloat("Speed", 0);
 			}
 
 		}
@@ -59,14 +92,22 @@ public class OgreMeshController : MonoBehaviour
 		{
 			if (facingLeft)
 			{
-				facingLeft = false;
-				rb.transform.eulerAngles = new Vector2(0, 100);
+				if (holdingBox != null)
+				{
+					holdingBox.rb.velocity += Vector2.right * Time.deltaTime * movementSpeed;
+					animSpeed = 0.6f;
+				}
+				else
+				{
+					facingLeft = false;
+					rb.transform.eulerAngles = new Vector2(0, 100);
+				}
 			}
 			rb.velocity += Vector2.right * Time.deltaTime * movementSpeed;
 
 			if (isGrounded)
 			{
-				animator.SetFloat("Speed", 1);
+				animator.SetFloat("Speed", animSpeed);
 			}
 		}
 		
@@ -77,13 +118,17 @@ public class OgreMeshController : MonoBehaviour
 
 		if (Input.GetKeyDown(KeyCode.W) && isGrounded)
 		{
-			if (!holdingABox)
+			if (holdingBox == null)
 			{
 				isGrounded = false;
 				rb.velocity += Vector2.up * jumpForce;
-				Debug.Log(isGrounded);
 			}
-		}	
+		}
+
+		if (Input.GetKeyDown(KeyCode.E))
+		{
+			grabClosest();
+		}
 	}
 
 	void OnCollisionEnter2D(Collision2D collision)
@@ -109,39 +154,41 @@ public class OgreMeshController : MonoBehaviour
 	}
 
 	void OnCollisionExit2D(Collision2D collision)
-	{
-		isGrounded = false;
-		if (collision.gameObject.GetComponent<BoxScript>() != null)
+    {
+        isGrounded = false;
+		if (holdingBox != null)
 		{
-			if (!holdingABox)
+			if (collision.gameObject.GetComponent<BoxScript>() != null)
 			{
 				Debug.Log("stopped touching box");
 				touchingBox = null;
 			}
 		}
-	}
+        
+    }
 
 	public void grabClosest()
 	{
-
 		if (touchingBox != null)
 		{
-			if (!holdingABox)
+			if (holdingBox == null)
 			{
 				movementSpeed = walkSpeed;
-				holdingABox = true;
+				holdingBox = touchingBox;
 				touchingBox.transform.parent = this.transform;
 				touchingBox.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 				touchingBox.beingHeld = true;
 				touchingBox.rb.mass = 1;
+				holdingABox = true;
 			}
 			else
 			{
 				movementSpeed = runSpeed;
-				holdingABox = false;
+				holdingBox = null;
 				touchingBox.transform.parent = null;
-				touchingBox.rb.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX;
 				touchingBox.beingHeld = false;
+				touchingBox.rb.mass = 10;
+				holdingABox = false;
 			}
 		}
 	}
