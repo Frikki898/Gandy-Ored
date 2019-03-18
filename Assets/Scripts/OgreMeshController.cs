@@ -43,17 +43,20 @@ public class OgreMeshController : MonoBehaviour
     void Update()
     {
 
-		Debug.Log(touchingBox);
+		//Debug.Log(touchingBox);
 		if (touchingBox != null)
 		{
 			if (holdingBox != null)
 			{
 				if (Mathf.Abs(holdingBox.GetComponent<Rigidbody2D>().velocity.y) >= 0.01)
 				{
+					Debug.Log("releaseng box");
 					movementSpeed = runSpeed;
-					holdingBox.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-					holdingBox.beingHeld = false;
 					holdingBox = null;
+					touchingBox.transform.parent = null;
+					touchingBox.beingHeld = false;
+					touchingBox.rb.mass = 10;
+					holdingABox = false;
 				}
 			}
 		}
@@ -156,14 +159,14 @@ public class OgreMeshController : MonoBehaviour
 	void OnCollisionExit2D(Collision2D collision)
     {
         isGrounded = false;
-		if (holdingBox != null)
-		{
+		//if (holdingBox != null)
+		//{
 			if (collision.gameObject.GetComponent<BoxScript>() != null)
 			{
 				Debug.Log("stopped touching box");
 				touchingBox = null;
 			}
-		}
+		//}
         
     }
 
