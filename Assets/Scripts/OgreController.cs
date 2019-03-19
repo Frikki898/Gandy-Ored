@@ -118,12 +118,32 @@ public class OgreController : MonoBehaviour
         {
             if (touchingBox != null)
             {
-                Debug.Log("ASDFASDFASDF");
-                movementSpeed = carrySpeed;
-                holdingBox = touchingBox;
-                holdingBox.beingHeld = true;
-                holdingBox.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-                holdingBox.rb.mass = 1;
+                if(touchingBox.BoxType == BoxScript.BoxTypes.wood)
+                {
+                    movementSpeed = carrySpeed;
+                    holdingBox = touchingBox;
+                    holdingBox.beingHeld = true;
+                    holdingBox.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+                    holdingBox.rb.mass = 1;
+                } 
+                else if(touchingBox.BoxType == BoxScript.BoxTypes.steel)
+                {
+                    movementSpeed = carrySpeed;
+                    holdingBox = touchingBox;
+                    holdingBox.beingHeld = true;
+                    holdingBox.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+                    holdingBox.rb.mass = 1;
+                }
+                else if(touchingBox.BoxType == BoxScript.BoxTypes.magic)
+                {
+                    Debug.Log("Cannot pick up magic");
+                    //todo: add visual feedback that cube cant be picked up
+                }
+                else if(touchingBox.BoxType == BoxScript.BoxTypes.wood)
+                {
+                    Debug.Log("Needs help to move this");
+                    //todo: add visual feedback that he needs help
+                }
             }
         }
         else
