@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b91a8a69bee50a44bb33b04514515313
+guid: e0b9fcfd46e39cc4aa100cc28371ac3d
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
@@ -98,9 +98,13 @@ ModelImporter:
     2100000: Material
     4300000: Cube
     7400000: ogre_walking
-    7400002: Armature|ogre_walking
-    7400004: Armature|running_circle
-    7400006: Armature|T-Pose
+    7400002: BadIdle
+    7400004: Idle
+    7400006: Jump
+    7400008: Walking
+    7400010: Running
+    7400012: ogre_walking (1)
+    7400014: pushing
     9500000: //RootNode
     13700000: Cube
     2186277476908879412: ImportLogs
@@ -128,10 +132,25 @@ ModelImporter:
       that might lower retargeting quality:\nNote: Activate translation DOF on avatar
       to improve retargeting quality.\n\t'LegUpper.L' has scale animation that will
       be discarded.\n\t'LegLower.L' has scale animation that will be discarded.\n\t'LegUpper.R'
+      has scale animation that will be discarded.\n\nClip 'Armature|Idle' has import
+      animation warnings that might lower retargeting quality:\nNote: Activate translation
+      DOF on avatar to improve retargeting quality.\n\t'LegUpper.L' has scale animation
+      that will be discarded.\n\t'LegUpper.R' has scale animation that will be discarded.\n\nClip
+      'Armature|Idle.001' has import animation warnings that might lower retargeting
+      quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'LegUpper.L'
+      has scale animation that will be discarded.\n\t'LegUpper.R' has scale animation
+      that will be discarded.\n\nClip 'Armature|jump' has import animation warnings
+      that might lower retargeting quality:\nNote: Activate translation DOF on avatar
+      to improve retargeting quality.\n\t'LegUpper.L' has scale animation that will
+      be discarded.\n\t'LegUpper.R' has scale animation that will be discarded.\n\t'LegLower.R'
       has scale animation that will be discarded.\n\nClip 'Armature|ogre_walking'
       has import animation warnings that might lower retargeting quality:\nNote: Activate
       translation DOF on avatar to improve retargeting quality.\n\t'LegUpper.L' has
       scale animation that will be discarded.\n\t'LegLower.L' has scale animation
+      that will be discarded.\n\t'LegUpper.R' has scale animation that will be discarded.\n\nClip
+      'Armature|pushing' has import animation warnings that might lower retargeting
+      quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'LegUpper.L'
+      has scale animation that will be discarded.\n\t'LegLower.L' has scale animation
       that will be discarded.\n\t'LegUpper.R' has scale animation that will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
@@ -146,10 +165,10 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: ogre_walking
-      takeName: ogre_walking
+      name: Idle
+      takeName: Armature|Idle.001
       firstFrame: 0
-      lastFrame: 25
+      lastFrame: 35
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -159,7 +178,7 @@ ModelImporter:
       loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 1
-      loopBlendPositionY: 0
+      loopBlendPositionY: 1
       loopBlendPositionXZ: 1
       keepOriginalOrientation: 0
       keepOriginalPositionY: 1
@@ -174,7 +193,35 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Armature|ogre_walking
+      name: Jump
+      takeName: Armature|jump
+      firstFrame: 0
+      lastFrame: 4
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 1
+      loopBlendPositionY: 1
+      loopBlendPositionXZ: 1
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Walking
       takeName: Armature|ogre_walking
       firstFrame: 0
       lastFrame: 31
@@ -188,12 +235,12 @@ ModelImporter:
       loopBlend: 0
       loopBlendOrientation: 1
       loopBlendPositionY: 1
-      loopBlendPositionXZ: 0
+      loopBlendPositionXZ: 1
       keepOriginalOrientation: 0
       keepOriginalPositionY: 1
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
-      mirror: 1
+      mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events: []
@@ -202,7 +249,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Armature|running_circle
+      name: Running
       takeName: Armature|running_circle
       firstFrame: 0
       lastFrame: 29
@@ -230,10 +277,10 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Armature|T-Pose
-      takeName: Armature|T-Pose
+      name: pushing
+      takeName: Armature|pushing
       firstFrame: 0
-      lastFrame: 1
+      lastFrame: 31
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -441,13 +488,13 @@ ModelImporter:
         length: 0
         modified: 0
     skeleton:
-    - name: ogre(Clone)
+    - name: ogre 1(Clone)
       parentName: 
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: Armature
-      parentName: ogre(Clone)
+      parentName: ogre 1(Clone)
       position: {x: 0.041861985, y: 1.8999141, z: 0.025630908}
       rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
       scale: {x: 100, y: 100, z: 100}
@@ -459,23 +506,23 @@ ModelImporter:
     - name: LegUpper.L
       parentName: Hips
       position: {x: 0.00031118805, y: -0.00012688954, z: -0.0037273564}
-      rotation: {x: 0.9921851, y: -0.11278801, z: -0.017708944, w: -0.050338455}
-      scale: {x: 0.9995883, y: 0.99987125, z: 0.9998073}
+      rotation: {x: 0.99221146, y: -0.11301549, z: -0.0091456175, w: -0.05157888}
+      scale: {x: 0.99959254, y: 0.99986726, z: 0.9998064}
     - name: LegLower.L
       parentName: LegUpper.L
-      position: {x: 2.4214386e-10, y: 0.008625496, z: -9.313225e-11}
-      rotation: {x: -0.036834367, y: -0.06255216, z: -0.34339738, w: 0.9363806}
-      scale: {x: 1.000166, y: 0.99987537, z: 0.99990803}
+      position: {x: 5.3085386e-10, y: 0.008625497, z: -3.9115547e-10}
+      rotation: {x: -0.034927, y: -0.063500404, z: -0.34195712, w: 0.9369168}
+      scale: {x: 1.0001752, y: 0.9998536, z: 0.999909}
     - name: Foot.L
       parentName: LegLower.L
-      position: {x: 2.9802322e-10, y: 0.008370199, z: -4.842877e-10}
-      rotation: {x: 0.3967306, y: -0.5770365, z: 0.44447872, w: 0.55863434}
-      scale: {x: 0.9999997, y: 0.9999997, z: 1.0000001}
+      position: {x: -5.9604643e-10, y: 0.008370197, z: -7.4505804e-11}
+      rotation: {x: 0.38199458, y: -0.5886904, z: 0.4392061, w: 0.5609116}
+      scale: {x: 0.99999976, y: 0.9999998, z: 1}
     - name: Toes.L
       parentName: Foot.L
-      position: {x: -0, y: 0.0016249692, z: 1.4901161e-10}
-      rotation: {x: 0.23209159, y: 0.0024441842, z: -0.033815157, w: 0.97210294}
-      scale: {x: 0.9999997, y: 1.0000001, z: 0.99999994}
+      position: {x: -7.4505804e-11, y: 0.0016249674, z: -5.587935e-10}
+      rotation: {x: 0.2320917, y: 0.0024441865, z: -0.03381516, w: 0.9721029}
+      scale: {x: 0.99999976, y: 1.0000001, z: 1}
     - name: Toes.L_end
       parentName: Toes.L
       position: {x: -0, y: 0.0028939466, z: 0}
@@ -484,26 +531,26 @@ ModelImporter:
     - name: LegUpper.R
       parentName: Hips
       position: {x: 0.0003241604, y: -0.00021761186, z: 0.0041870275}
-      rotation: {x: 0.99760544, y: -0.04269771, z: -0.006469506, w: -0.054023165}
-      scale: {x: 0.99944884, y: 1.0000031, z: 0.9998273}
+      rotation: {x: 0.9976122, y: -0.04273589, z: -0.016451698, w: -0.051700637}
+      scale: {x: 0.99944794, y: 1.0000031, z: 0.9998283}
     - name: LegLower.R
       parentName: LegUpper.R
-      position: {x: 1.8742867e-10, y: 0.008625498, z: -2.0838342e-10}
-      rotation: {x: -0.063309364, y: 0.0010919106, z: -0.27634662, w: 0.95896995}
-      scale: {x: 0.99996805, y: 0.99998504, z: 1.0000277}
+      position: {x: 1.0244548e-10, y: 0.008625498, z: 1.5599652e-10}
+      rotation: {x: -0.063309364, y: 0.0010919087, z: -0.27634662, w: 0.95896995}
+      scale: {x: 0.999968, y: 0.9999851, z: 1.0000275}
     - name: Foot.R
       parentName: LegLower.R
-      position: {x: -9.313225e-11, y: 0.008299183, z: 2.561137e-11}
-      rotation: {x: 0.32815713, y: -0.63194805, z: 0.34443852, w: 0.61181426}
-      scale: {x: 0.9999999, y: 0.9999999, z: 0.9999998}
+      position: {x: -3.352761e-10, y: 0.008299182, z: -5.3551046e-11}
+      rotation: {x: 0.32815653, y: -0.6319484, z: 0.34443793, w: 0.6118146}
+      scale: {x: 0.9999998, y: 0.99999976, z: 0.9999997}
     - name: Toes.R
       parentName: Foot.R
-      position: {x: -1.9557773e-10, y: 0.0016249666, z: 3.0733643e-10}
-      rotation: {x: 0.45642355, y: 0.0018022471, z: -0.032378696, w: 0.8891715}
-      scale: {x: 0.9999999, y: 0.9999999, z: 0.9999999}
+      position: {x: -8.381903e-11, y: 0.0016249692, z: 6.3329936e-10}
+      rotation: {x: 0.41641062, y: 0.0116373245, z: -0.03203521, w: 0.90853757}
+      scale: {x: 0.99999976, y: 0.9999999, z: 0.99999994}
     - name: Toes.R_end
       parentName: Toes.R
-      position: {x: -0, y: 0.0028939466, z: 0}
+      position: {x: -0, y: 0.0028939464, z: 0}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: Spine
@@ -618,14 +665,14 @@ ModelImporter:
       scale: {x: 1, y: 1, z: 1}
     - name: legControl.L
       parentName: Armature
-      position: {x: -0.0029740422, y: 0.0041825096, z: -0.019017817}
+      position: {x: -0.0024577847, y: 0.0046166754, z: -0.019172655}
       rotation: {x: 0.57497454, y: -0.41607428, z: 0.36181816, w: 0.6044618}
       scale: {x: 1, y: 1, z: 1}
     - name: legLower.L.001
       parentName: legControl.L
-      position: {x: 0.0021757854, y: 0.0014236778, z: -0.000025425394}
-      rotation: {x: 0.7069076, y: 0.017968535, z: 0.7068703, w: -0.017124582}
-      scale: {x: 0.9999938, y: 0.9999999, z: 1}
+      position: {x: 0.0023306245, y: 0.0019399344, z: 0.00040874092}
+      rotation: {x: 0.7069064, y: 0.018014, z: 0.7068692, w: -0.017169949}
+      scale: {x: 0.9999938, y: 0.9999999, z: 0.9999999}
     - name: legLower.L.001_end
       parentName: legLower.L.001
       position: {x: -0, y: 0.0033645388, z: 0}
@@ -648,7 +695,7 @@ ModelImporter:
       scale: {x: 1, y: 1, z: 1}
     - name: legPole.L
       parentName: Armature
-      position: {x: -0.0052996683, y: 0.004144437, z: -0.008984278}
+      position: {x: -0.008055994, y: 0.004144436, z: -0.00005378127}
       rotation: {x: -0.00989676, y: -0.011141644, z: 0.74755824, w: 0.66402906}
       scale: {x: 0.9999999, y: 0.99999994, z: 0.99999994}
     - name: legPole.L_end
@@ -658,7 +705,7 @@ ModelImporter:
       scale: {x: 1, y: 1, z: 1}
     - name: legPole.R
       parentName: Armature
-      position: {x: -0.005286696, y: -0.003770467, z: -0.008984283}
+      position: {x: -0.007932769, y: -0.003770468, z: -0.000053786633}
       rotation: {x: -0.00989676, y: -0.011141644, z: 0.74755824, w: 0.66402906}
       scale: {x: 0.9999999, y: 0.99999994, z: 0.99999994}
     - name: legPole.R_end
@@ -667,7 +714,7 @@ ModelImporter:
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: Cube
-      parentName: ogre(Clone)
+      parentName: ogre 1(Clone)
       position: {x: 0.09555665, y: 2.8668263, z: -0.00000010244548}
       rotation: {x: -0.705241, y: -4.1374072e-19, z: 4.1374072e-19, w: 0.7089676}
       scale: {x: 100, y: 100, z: 100}

@@ -68,7 +68,7 @@ public class OgreMeshController : MonoBehaviour
 				if (holdingBox != null)
 				{
 					holdingBox.rb.velocity += Vector2.left * Time.deltaTime * movementSpeed;
-					animSpeed = 0.6f;
+					animSpeed = -0.6f;
 				}
 				else
 				{
@@ -77,17 +77,25 @@ public class OgreMeshController : MonoBehaviour
 					animSpeed = 1f;
 				}
 			}
+			else
+			{
+				if (holdingBox != null)
+				{
+					holdingBox.rb.velocity += Vector2.left * Time.deltaTime * movementSpeed;
+					animSpeed = 0.6f;
+				}
+			}
 			
 			rb.velocity += Vector2.left  * Time.deltaTime * movementSpeed;
 
 			if (isGrounded)
 			{
-				animator.SetFloat("Speed", animSpeed);
+				animator.SetFloat("mainSpeed", animSpeed);
 			}
 			else
 			{
 				//TODO: in-air and falling animation
-				animator.SetFloat("Speed", 0);
+				animator.SetFloat("mainSpeed", 1.5f);
 			}
 
 		}
@@ -98,7 +106,7 @@ public class OgreMeshController : MonoBehaviour
 				if (holdingBox != null)
 				{
 					holdingBox.rb.velocity += Vector2.right * Time.deltaTime * movementSpeed;
-					animSpeed = 0.6f;
+					animSpeed = -0.6f;
 				}
 				else
 				{
@@ -106,17 +114,31 @@ public class OgreMeshController : MonoBehaviour
 					rb.transform.eulerAngles = new Vector2(0, 100);
 				}
 			}
+			else
+			{
+				if (holdingBox != null)
+				{
+					holdingBox.rb.velocity += Vector2.right * Time.deltaTime * movementSpeed;
+					animSpeed = 0.6f;
+				}
+			}
 			rb.velocity += Vector2.right * Time.deltaTime * movementSpeed;
 
 			if (isGrounded)
 			{
-				animator.SetFloat("Speed", animSpeed);
+				animator.SetFloat("mainSpeed", animSpeed);
+			}
+			else
+			{
+				//TODO: in-air and falling animation
+				animator.SetFloat("mainSpeed", 1.5f);
 			}
 		}
 		
 		if(!Input.anyKey)
 		{
-			animator.SetFloat("Speed", 0);
+			if(isGrounded)
+				animator.SetFloat("mainSpeed", 0);
 		}
 
 		if (Input.GetKeyDown(KeyCode.W) && isGrounded)
