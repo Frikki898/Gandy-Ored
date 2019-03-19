@@ -10,11 +10,12 @@ public class OgreController : MonoBehaviour
     private Rigidbody2D rigid;
     public float jumpForce;
     public bool isGrounded;
-    private float movementSpeed;
+    public float movementSpeed;
     public float runSpeed;
     public float carrySpeed;
     private BoxScript touchingBox = null;
     private BoxScript holdingBox = null;
+    private float ychange = 1;
 
     // Start is called before the first frame update
     void Start()
@@ -28,17 +29,15 @@ public class OgreController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(touchingBox != null)
+        if(holdingBox != null)
         {
-            if(holdingBox != null)
+            if (Mathf.Abs(holdingBox.GetComponent<Rigidbody2D>().velocity.y) >= ychange || Mathf.Abs(rigid.velocity.y) >= ychange)
             {
-                if (Mathf.Abs(holdingBox.GetComponent<Rigidbody2D>().velocity.y) >= 0.01)
-                {
-                    movementSpeed = runSpeed;
-                    holdingBox.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-                    holdingBox.beingHeld = false;
-                    holdingBox = null;
-                }
+                Debug.Log("break from here");
+                movementSpeed = runSpeed;
+                holdingBox.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+                holdingBox.beingHeld = false;
+                holdingBox = null;
             }
         }
 
@@ -98,8 +97,16 @@ public class OgreController : MonoBehaviour
     void OnCollisionExit2D(Collision2D collision)
     {
         isGrounded = false;
+        BoxScript b = collision.gameObject.GetComponent<BoxScript>();
         if (collision.gameObject.GetComponent<BoxScript>() != null)
         {
+            Debug.Log("getting in here");
+            if (b == holdingBox)
+            {
+                Debug.Log("not getting in here");
+                //releasing the box if i move away form it
+                grabClosest();
+            }
             Debug.Log("stopped touching box");
             touchingBox = null;
         }
@@ -107,26 +114,24 @@ public class OgreController : MonoBehaviour
 
     public void grabClosest()
     {
-
-        if(touchingBox != null)
+        if(holdingBox == null)
         {
-            if(holdingBox == null)
+            if (touchingBox != null)
             {
+                Debug.Log("ASDFASDFASDF");
                 movementSpeed = carrySpeed;
                 holdingBox = touchingBox;
-                touchingBox.transform.parent = this.transform;
-                touchingBox.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-                touchingBox.beingHeld = true;
-                touchingBox.rb.mass = 1;
+                holdingBox.beingHeld = true;
+                holdingBox.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+                holdingBox.rb.mass = 1;
             }
-            else
-            {
-                movementSpeed = runSpeed;
-                holdingBox = null;
-                touchingBox.transform.parent = null;
-                touchingBox.beingHeld = false;
-                touchingBox.rb.mass = 10;
-            }
+        }
+        else
+        {
+            movementSpeed = runSpeed;
+            holdingBox.beingHeld = false;
+            holdingBox.rb.mass = 10;
+            holdingBox = null;
         }
     }
 
