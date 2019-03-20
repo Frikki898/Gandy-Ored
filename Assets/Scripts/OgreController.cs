@@ -69,6 +69,10 @@ public class OgreController : MonoBehaviour
 					holdingBox.rb.velocity += Vector2.left * Time.deltaTime * movementSpeed;
 					animSpeed = 0.6f;
 				}
+				else
+				{
+					animSpeed = 1f;
+				}
 			}
 
 			rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed;
@@ -96,6 +100,10 @@ public class OgreController : MonoBehaviour
 				{
 					holdingBox.rb.velocity += Vector2.right * Time.deltaTime * movementSpeed;
 					animSpeed = 0.6f;
+				}
+				else
+				{
+					animSpeed = 1f;
 				}
 			}
 			rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed;
