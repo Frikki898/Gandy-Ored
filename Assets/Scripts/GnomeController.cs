@@ -37,8 +37,11 @@ public class GnomeController : MonoBehaviour
 				rigid.transform.eulerAngles = new Vector2(0, -89);
 			}
 
+            float beforeMovement = this.transform.position.x;
             rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed;
-            if(holdingABox)
+
+
+            if(holdingABox && beforeMovement != this.transform.position.x)
             {
                 grabClosest();
             }
@@ -52,8 +55,11 @@ public class GnomeController : MonoBehaviour
 				rigid.transform.eulerAngles = new Vector2(0, 89);
 			}
 
-			rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed;
-            if (holdingABox)
+            float beforeMovement = this.transform.position.x;
+            rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed;
+
+
+            if (holdingABox && beforeMovement != this.transform.position.x)
             {
                 grabClosest();
             }
