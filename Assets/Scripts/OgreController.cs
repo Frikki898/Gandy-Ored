@@ -24,7 +24,14 @@ public class OgreController : MonoBehaviour
     {
 		transform.eulerAngles = new Vector2(0, 100);
 
-		Physics2D.IgnoreCollision(gnome.GetComponent<Collider2D>(), this.GetComponent<Collider2D>());
+        foreach(Collider2D col1 in gnome.GetComponents<Collider2D>())
+        {
+            foreach (Collider2D col2 in this.GetComponents<Collider2D>())
+            {
+                Physics2D.IgnoreCollision(col1, col2);
+            }
+        }
+		
 		animator = GetComponent<Animator>();
 		rigid = this.GetComponent<Rigidbody2D>();
         movementSpeed = runSpeed;
@@ -240,3 +247,4 @@ public class OgreController : MonoBehaviour
         lastFrameVelo = rigid.velocity.y;
     }
 }
+
