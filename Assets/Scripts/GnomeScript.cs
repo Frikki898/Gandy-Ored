@@ -51,15 +51,37 @@ public class GnomeScript : MonoBehaviour
         {
             if (!holdingABox)
             {
-                holdingABox = true;
-                LevitatingBox = touchingBox;
-                //touchingBox.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
+                if(!touchingBox.beingHeld)
+                {
+                    if (touchingBox.BoxType == BoxScript.BoxTypes.wood)
+                    {
+                        holdingABox = true;
+                        LevitatingBox = touchingBox;
+                        LevitatingBox.beingHeld = true;
+                    }
+                    else if (touchingBox.BoxType == BoxScript.BoxTypes.steel)
+                    {
+                        Debug.Log("Cannot pick up steel");
+                        //todo: add visual feedback that cube cant be picked up
+                    }
+                    else if (touchingBox.BoxType == BoxScript.BoxTypes.magic)
+                    {
+                        holdingABox = true;
+                        LevitatingBox = touchingBox;
+                        LevitatingBox.beingHeld = true;
+                    }
+                    else if (touchingBox.BoxType == BoxScript.BoxTypes.wood)
+                    {
+                        Debug.Log("Needs help to move this");
+                        //todo: add visual feedback that he needs help
+                    }
+                }
             }
             else
             {
+                LevitatingBox.beingHeld = false;
                 LevitatingBox = null;
                 holdingABox = false;
-                //touchingBox.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX;
             }
         }
     }

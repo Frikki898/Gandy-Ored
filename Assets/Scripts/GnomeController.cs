@@ -7,10 +7,13 @@ public class GnomeController : MonoBehaviour
     public GameObject ogre;
     public float movementSpeed;
     public float levitationSpeed;
+    public float climbSpeed;
     private Rigidbody2D rigid;
-    private GameObject touchingBox = null;
-    private GameObject floatingBox;
+    private BoxScript touchingBox = null;
+    private BoxScript floatingBox;
     private bool holdingABox = false;
+    private bool nextPressWillDrop = false;
+    private bool onLadder = false;
 
     // Start is called before the first frame update
     void Start()
@@ -36,18 +39,22 @@ public class GnomeController : MonoBehaviour
         
         if(Input.GetKey(KeyCode.UpArrow)) {
             if(holdingABox) {
-                floatingBox = touchingBox;
                 floatingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
-                touchingBox.GetComponent<Rigidbody2D>().velocity += Vector2.up * Time.deltaTime * levitationSpeed;
+                floatingBox.GetComponent<Rigidbody2D>().velocity += Vector2.up * Time.deltaTime * levitationSpeed;
+            }
+            else if(onLadder)
+            {
+                rigid.velocity += Vector2.up * Time.deltaTime * climbSpeed;
             }
         }
         if(Input.GetKey(KeyCode.DownArrow)) {
             if(holdingABox) {
-                if (floatingBox)
-                {
-                    floatingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;    
-                }
-                touchingBox.GetComponent<Rigidbody2D>().velocity += Vector2.down * Time.deltaTime * levitationSpeed;
+                floatingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;    
+                floatingBox.GetComponent<Rigidbody2D>().velocity += Vector2.down * Time.deltaTime * levitationSpeed;
+            }
+            else if (onLadder)
+            {
+                rigid.velocity += Vector2.down * Time.deltaTime * climbSpeed;
             }
         }
         if (floatingBox) {
@@ -59,49 +66,100 @@ public class GnomeController : MonoBehaviour
         {
             grabClosest();
         }
-       
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.GetComponent<BoxScript>() != null)
+        BoxScript b = collision.gameObject.GetComponent<BoxScript>();
+        if (b != null)
         {
-            Debug.Log("Touching a box");
-            touchingBox = collision.gameObject;
+            //Debug.Log("Touching a box");
+            touchingBox = collision.gameObject.GetComponent<BoxScript>();
         }
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log(collision.gameObject.name);
+        if (collision.gameObject.tag == "Ladder")
+        {
+            Debug.Log("onLadder");
+            onLadder = true;
+            rigid.gravityScale = 0;
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D collision)
+    {
+        Debug.Log(collision.gameObject.name);
+        if (collision.gameObject.tag == "Ladder")
+        {
+            Debug.Log("onLadder");
+            onLadder = false;
+            //rigid.velocity = Vector2.zero;
+            rigid.gravityScale = 25;
+        }
+    }
+
+    void OnCollisionExit2D(Collision2D collision)
+    {
+        BoxScript b = collision.gameObject.GetComponent<BoxScript>();
+        if (b != null)
+        {
+            touchingBox = null;
+        }
+
+
     }
 
     public void grabClosest()
     {
-        if(touchingBox != null)
+        if(nextPressWillDrop)
         {
-            if(!holdingABox)
+            floatingBox.GetComponent<Rigidbody2D>().gravityScale = 25;
+            floatingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+            floatingBox.beingHeld = false;
+            floatingBox = null;
+            nextPressWillDrop = false;
+        }
+        if(!holdingABox)
+        {
+            if(touchingBox != null)
             {
-                if(floatingBox) {
-                    floatingBox.GetComponent<Rigidbody2D>().gravityScale = 25;
-                    floatingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;  
-                    floatingBox = null;  
+                if(!touchingBox.beingHeld)
+                {
+                    if (touchingBox.BoxType == BoxScript.BoxTypes.wood)
+                    {
+                        floatingBox = touchingBox;
+                        floatingBox.beingHeld = true;
+                        holdingABox = true;
+                        touchingBox.GetComponent<Rigidbody2D>().gravityScale = 0;
+                        //Debug.Log("grabbed " + touchingBox);
+                    }
+                    else if (touchingBox.BoxType == BoxScript.BoxTypes.steel)
+                    {
+                        Debug.Log("Cannot pick up steel");
+                        //todo: add visual feedback that cube cant be picked up
+                    }
+                    else if (touchingBox.BoxType == BoxScript.BoxTypes.magic)
+                    {
+                        floatingBox = touchingBox;
+                        floatingBox.beingHeld = true;
+                        holdingABox = true;
+                        touchingBox.GetComponent<Rigidbody2D>().gravityScale = 0;
+                        //Debug.Log("grabbed " + touchingBox);
+                    }
+                    else if (touchingBox.BoxType == BoxScript.BoxTypes.wood)
+                    {
+                        Debug.Log("Needs help to move this");
+                        //todo: add visual feedback that he needs help
+                    }
                 }
-                holdingABox = true;
-                touchingBox.GetComponent<Rigidbody2D>().gravityScale = 0;
-                Debug.Log("grabbed " + touchingBox);
-            }
-            else
-            {
-                holdingABox = false;
-                Debug.Log("dropped " + touchingBox);
-                touchingBox.transform.parent = null;
-                touchingBox.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX;
-                touchingBox = null;
             }
         }
         else {
-            if(floatingBox) {
-                floatingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;   
-                floatingBox.GetComponent<Rigidbody2D>().gravityScale = 25;
-                floatingBox.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX;
-                floatingBox = null;     
-            }
+            holdingABox = false;
+            nextPressWillDrop = true;
         }
     }
 }
