@@ -75,6 +75,7 @@ GameObject:
   - component: {fileID: 6233018858993585861}
   - component: {fileID: 1935383423256260553}
   - component: {fileID: 6233018858542416027}
+  - component: {fileID: 1171227823}
   m_Layer: 0
   m_Name: gnome 1
   m_TagString: Untagged
@@ -151,7 +152,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 14.564931, y: 2.8924427}
+  m_Offset: {x: 14.564931, y: 3.5}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -162,7 +163,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 82.672386, y: 5.8995237}
+  m_Size: {x: 128.3, y: 4.8}
   m_EdgeRadius: 0
 --- !u!114 &6233018858542416027
 MonoBehaviour:
@@ -179,7 +180,23 @@ MonoBehaviour:
   ogre: {fileID: 0}
   movementSpeed: 80
   levitationSpeed: 100
-  climbSpeed: 0
+  climbSpeed: 50
+--- !u!58 &1171227823
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6233018859195777317}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 14.56493, y: 1.01}
+  serializedVersion: 2
+  m_Radius: 1.05
 --- !u!1 &6233018859195777319
 GameObject:
   m_ObjectHideFlags: 0
@@ -389,7 +406,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6233018859195777331}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 2.210982, z: 0}
+  m_LocalPosition: {x: -0, y: 2.210982, z: 72.1}
   m_LocalScale: {x: 103.86305, y: 126.52494, z: 100}
   m_Children: []
   m_Father: {fileID: 6233018859195686149}
