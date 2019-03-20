@@ -98,7 +98,7 @@ public class OgreController : MonoBehaviour
     {
         isGrounded = false;
         BoxScript b = collision.gameObject.GetComponent<BoxScript>();
-        if (collision.gameObject.GetComponent<BoxScript>() != null)
+        if (b != null)
         {
             Debug.Log("getting in here");
             if (b == holdingBox)
