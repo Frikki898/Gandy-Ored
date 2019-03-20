@@ -26,14 +26,20 @@ public class GnomeController : MonoBehaviour
     void Update()
     {
         //Debug.Log("arrows");
-        if(!holdingABox) {
-            if (Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed;
+            if(holdingABox)
             {
-                rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed;
+                grabClosest();
             }
-            if (Input.GetKey(KeyCode.RightArrow))
+        }
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+            rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed;
+            if (holdingABox)
             {
-                rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed;        
+                grabClosest();
             }
         }
         

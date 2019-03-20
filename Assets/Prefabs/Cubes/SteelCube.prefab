@@ -10,7 +10,7 @@ PrefabInstance:
     - target: {fileID: 3271181844680107320, guid: e90d8b1e583760e45b9bc47c5b87b609,
         type: 3}
       propertyPath: m_Name
-      value: SteelCube
+      value: SteelCube Variant
       objectReference: {fileID: 0}
     - target: {fileID: 3271181844680107318, guid: e90d8b1e583760e45b9bc47c5b87b609,
         type: 3}
