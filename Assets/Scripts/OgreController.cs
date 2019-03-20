@@ -229,8 +229,14 @@ public class OgreController : MonoBehaviour
         }
     }
 
+
+    private float lastFrameVelo;
     void OnCollisionStay2D()
     {
-        isGrounded = true;
+        if (rigid.velocity.y == 0 && lastFrameVelo == 0)
+        {
+            isGrounded = true;
+        }
+        lastFrameVelo = rigid.velocity.y;
     }
 }
