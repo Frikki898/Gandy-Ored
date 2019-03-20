@@ -11,16 +11,19 @@ public class GnomeController : MonoBehaviour
     private Rigidbody2D rigid;
     private BoxScript touchingBox = null;
     private BoxScript floatingBox;
-    private bool holdingABox = false;
+	private Animator animator = null;
+	private bool holdingABox = false;
     private bool nextPressWillDrop = false;
     private bool onLadder = false;
+	private bool facingLeft = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        Physics2D.IgnoreCollision(ogre.GetComponent<Collider2D>(), this.GetComponent<Collider2D>());
+		Physics2D.IgnoreCollision(ogre.GetComponent<Collider2D>(), this.GetComponent<Collider2D>());
         rigid = this.GetComponent<Rigidbody2D>();
-    }
+		animator = GetComponent<Animator>();
+	}
 
     // Update is called once per frame
     void Update()
@@ -28,20 +31,34 @@ public class GnomeController : MonoBehaviour
         //Debug.Log("arrows");
         if (Input.GetKey(KeyCode.LeftArrow))
         {
+			if (!facingLeft)
+			{
+				facingLeft = true;
+				rigid.transform.eulerAngles = new Vector2(0, -89);
+			}
+
             rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed;
             if(holdingABox)
             {
                 grabClosest();
             }
+			animator.SetFloat("animation", 1);
         }
         if (Input.GetKey(KeyCode.RightArrow))
         {
-            rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed;
+			if (facingLeft)
+			{
+				facingLeft = false;
+				rigid.transform.eulerAngles = new Vector2(0, 89);
+			}
+
+			rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed;
             if (holdingABox)
             {
                 grabClosest();
             }
-        }
+			animator.SetFloat("animation", 1);
+		}
         
         if(Input.GetKey(KeyCode.UpArrow)) {
             if(holdingABox) {
@@ -72,7 +89,12 @@ public class GnomeController : MonoBehaviour
         {
             grabClosest();
         }
-    }
+
+		if (!Input.anyKey)
+		{
+			animator.SetFloat("animation", 0);
+		}
+	}
 
     void OnCollisionEnter2D(Collision2D collision)
     {

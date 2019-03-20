@@ -10,10 +10,14 @@ public class GnomeScript : MonoBehaviour
     private BoxScript touchingBox = null;
     private BoxScript LevitatingBox = null;
     private bool holdingABox = false;
+	private Animator animator = null;
 
     // Start is called before the first frame update
     void Start()
     {
+		transform.eulerAngles = new Vector2(0, 89);
+
+		animator = GetComponent<Animator>();
         Physics2D.IgnoreCollision(ogre.GetComponent<Collider2D>(), this.GetComponent<Collider2D>());
         rigid = this.GetComponent<Rigidbody2D>();
     }
