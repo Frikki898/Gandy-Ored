@@ -146,4 +146,3 @@ MonoBehaviour:
   movementSpeed: 0
   runSpeed: 120
   carrySpeed: 75
-  ychange: 1

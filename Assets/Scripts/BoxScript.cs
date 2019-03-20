@@ -19,6 +19,9 @@ public class BoxScript : MonoBehaviour
 
     public bool beingHeld = false;
 
+    public GameObject gnomeSelection;
+    public GameObject ogreSelection;
+
     // Start is called before the first frame update
     void Start()
     {
