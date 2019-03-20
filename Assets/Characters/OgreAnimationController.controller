@@ -14,19 +14,19 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: isGrounded
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 1
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: isJumping
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: isIdle
@@ -76,7 +76,7 @@ BlendTree:
     m_Motion: {fileID: 7400014, guid: e0b9fcfd46e39cc4aa100cc28371ac3d, type: 3}
     m_Threshold: 0.5
     m_Position: {x: 0, y: 0}
-    m_TimeScale: 1
+    m_TimeScale: 1.5
     m_CycleOffset: 0.5
     m_DirectBlendParameter: Speed
     m_Mirror: 1
@@ -92,7 +92,7 @@ BlendTree:
     m_Motion: {fileID: 7400006, guid: e0b9fcfd46e39cc4aa100cc28371ac3d, type: 3}
     m_Threshold: 1.5
     m_Position: {x: 0, y: 0}
-    m_TimeScale: 1
+    m_TimeScale: 0.02
     m_CycleOffset: 0
     m_DirectBlendParameter: mainSpeed
     m_Mirror: 0
