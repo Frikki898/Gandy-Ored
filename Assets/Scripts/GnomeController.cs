@@ -125,6 +125,7 @@ public class GnomeController : MonoBehaviour
             floatingBox.GetComponent<Rigidbody2D>().gravityScale = 25;
             floatingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
             floatingBox.beingHeld = false;
+            floatingBox.gnomeSelection.SetActive(false);
             floatingBox = null;
             nextPressWillDrop = false;
         }
@@ -140,6 +141,7 @@ public class GnomeController : MonoBehaviour
                         floatingBox.beingHeld = true;
                         holdingABox = true;
                         touchingBox.GetComponent<Rigidbody2D>().gravityScale = 0;
+                        floatingBox.gnomeSelection.SetActive(true);
                         //Debug.Log("grabbed " + touchingBox);
                     }
                     else if (touchingBox.BoxType == BoxScript.BoxTypes.steel)
@@ -153,6 +155,7 @@ public class GnomeController : MonoBehaviour
                         floatingBox.beingHeld = true;
                         holdingABox = true;
                         touchingBox.GetComponent<Rigidbody2D>().gravityScale = 0;
+                        floatingBox.gnomeSelection.SetActive(true);
                         //Debug.Log("grabbed " + touchingBox);
                     }
                     else if (touchingBox.BoxType == BoxScript.BoxTypes.wood)
