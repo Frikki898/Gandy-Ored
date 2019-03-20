@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
 public class OgreController : MonoBehaviour
 {
     public float sideWaysSpeed;
@@ -13,15 +12,21 @@ public class OgreController : MonoBehaviour
     public float movementSpeed;
     public float runSpeed;
     public float carrySpeed;
-    private BoxScript touchingBox = null;
+	private Animator animator = null;
+	private BoxScript touchingBox = null;
     private BoxScript holdingBox = null;
     private float ychange = 1;
+	private float animSpeed = 1;
+	private bool facingLeft = false;
 
-    // Start is called before the first frame update
-    void Start()
+	// Start is called before the first frame update
+	void Start()
     {
-        Physics2D.IgnoreCollision(gnome.GetComponent<Collider2D>(), this.GetComponent<Collider2D>());
-        rigid = this.GetComponent<Rigidbody2D>();
+		transform.eulerAngles = new Vector2(0, 100);
+
+		Physics2D.IgnoreCollision(gnome.GetComponent<Collider2D>(), this.GetComponent<Collider2D>());
+		animator = GetComponent<Animator>();
+		rigid = this.GetComponent<Rigidbody2D>();
         movementSpeed = runSpeed;
         rigid.centerOfMass = Vector3.zero;
     }
@@ -41,23 +46,62 @@ public class OgreController : MonoBehaviour
             }
         }
 
-        if (Input.GetKey(KeyCode.A))
-        {
-            if(holdingBox != null)
-            {
-                holdingBox.rb.velocity += Vector2.left * Time.deltaTime * movementSpeed;
-            }
-            rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed;
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            if (holdingBox != null)
-            {
-                holdingBox.rb.velocity += Vector2.right * Time.deltaTime * movementSpeed;
-            }
-            rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed;
-        }
-        if (Input.GetKeyDown(KeyCode.W) && isGrounded)
+		if (Input.GetKey(KeyCode.A))
+		{
+			if (!facingLeft)
+			{
+				if (holdingBox != null)
+				{
+					holdingBox.rb.velocity += Vector2.left * Time.deltaTime * movementSpeed;
+					animSpeed = -0.6f;
+				}
+				else
+				{
+					facingLeft = true;
+					rigid.transform.eulerAngles = new Vector2(0, -80);
+					animSpeed = 1f;
+				}
+			}
+			else
+			{
+				if (holdingBox != null)
+				{
+					holdingBox.rb.velocity += Vector2.left * Time.deltaTime * movementSpeed;
+					animSpeed = 0.6f;
+				}
+			}
+
+			rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed;
+
+		}
+		else if (Input.GetKey(KeyCode.D))
+		{
+			if (facingLeft)
+			{
+				if (holdingBox != null)
+				{
+					holdingBox.rb.velocity += Vector2.right * Time.deltaTime * movementSpeed;
+					animSpeed = -0.6f;
+				}
+				else
+				{
+					facingLeft = false;
+					rigid.transform.eulerAngles = new Vector2(0, 100);
+					animSpeed = 1f;
+				}
+			}
+			else
+			{
+				if (holdingBox != null)
+				{
+					holdingBox.rb.velocity += Vector2.right * Time.deltaTime * movementSpeed;
+					animSpeed = 0.6f;
+				}
+			}
+			rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed;
+		}
+
+		if (Input.GetKeyDown(KeyCode.W) && isGrounded)
         {
             if(holdingBox == null)
             {
@@ -68,9 +112,27 @@ public class OgreController : MonoBehaviour
         }
         if(Input.GetKeyDown(KeyCode.E))
         {
-            grabClosest();
+			animSpeed = 0;
+			grabClosest();
         }
-    }
+
+		if (!Input.anyKey)
+		{
+			if (isGrounded)
+				animSpeed = 0;
+		}
+
+		if (isGrounded)
+		{
+			animator.SetFloat("mainSpeed", animSpeed);
+		}
+		else
+		{
+			animator.SetFloat("mainSpeed", 1.5f);
+		}
+
+		
+	}
 
     void OnCollisionEnter2D(Collision2D collision)
     {
