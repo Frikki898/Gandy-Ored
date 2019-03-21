@@ -83,6 +83,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectLevel: 0
+  canExit: 1
+  level1: {fileID: 0}
+  level2: {fileID: 0}
+  level3: {fileID: 0}
 --- !u!61 &7855921485811880873
 BoxCollider2D:
   m_ObjectHideFlags: 0
