@@ -5,7 +5,6 @@ using UnityEngine;
 public class OgreController : MonoBehaviour
 {
     public float sideWaysSpeed;
-    public GameObject gnome;
     private Rigidbody2D rigid;
     public float jumpForce;
     public bool isGrounded;
@@ -24,7 +23,7 @@ public class OgreController : MonoBehaviour
     {
 		transform.eulerAngles = new Vector2(0, 100);
 
-        foreach(Collider2D col1 in gnome.GetComponents<Collider2D>())
+        foreach(Collider2D col1 in FindObjectOfType<GnomeController>().GetComponents<Collider2D>())
         {
             foreach (Collider2D col2 in this.GetComponents<Collider2D>())
             {

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class GnomeController : MonoBehaviour
 {
-    public GameObject ogre;
     public float movementSpeed;
     public float levitationSpeed;
     public float climbSpeed;
@@ -20,7 +19,13 @@ public class GnomeController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-		Physics2D.IgnoreCollision(ogre.GetComponent<Collider2D>(), this.GetComponent<Collider2D>());
+        foreach (Collider2D col1 in FindObjectOfType<OgreController>().GetComponents<Collider2D>())
+        {
+            foreach (Collider2D col2 in this.GetComponents<Collider2D>())
+            {
+                Physics2D.IgnoreCollision(col1, col2);
+            }
+        }
         rigid = this.GetComponent<Rigidbody2D>();
 		animator = GetComponent<Animator>();
 	}
