@@ -58,6 +58,27 @@ public class LevelExit : MonoBehaviour
 			Scene scene = SceneManager.GetActiveScene();
 			SceneManager.LoadScene(scene.name);
 		}
+
+		if (Input.GetKey(KeyCode.Alpha1))
+		{
+			level1.SetActive(true);
+			level2.SetActive(false);
+			level3.SetActive(false);
+		}
+
+		if (Input.GetKey(KeyCode.Alpha2))
+		{
+			level1.SetActive(false);
+			level2.SetActive(true);
+			level3.SetActive(false);
+		}
+
+		if (Input.GetKey(KeyCode.Alpha3))
+		{
+			level1.SetActive(false);
+			level2.SetActive(false);
+			level3.SetActive(true);
+		}
 	}
 
 	void OnTriggerExit2D(Collider2D collision)
