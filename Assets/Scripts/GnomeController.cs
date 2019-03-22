@@ -33,38 +33,42 @@ public class GnomeController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log("arrows");
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
+		//Debug.Log("arrows");
+		if (Input.GetKey(KeyCode.LeftArrow))
+		{
 			if (!facingLeft)
 			{
 				facingLeft = true;
 				rigid.transform.eulerAngles = new Vector2(0, -89);
 			}
 
-            rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed;
+			rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed;
 
-            if(holdingABox && touchingBox != floatingBox)
-            {
-                grabClosest();
-            }
+			if (holdingABox && touchingBox != floatingBox)
+			{
+				grabClosest();
+			}
 			animator.SetFloat("animation", 1);
-        }
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
+		}
+		else if (Input.GetKey(KeyCode.RightArrow))
+		{
 			if (facingLeft)
 			{
 				facingLeft = false;
 				rigid.transform.eulerAngles = new Vector2(0, 89);
 			}
 
-            rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed;
+			rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed;
 
-            if (holdingABox && touchingBox != floatingBox)
-            {
-                grabClosest();
-            }
+			if (holdingABox && touchingBox != floatingBox)
+			{
+				grabClosest();
+			}
 			animator.SetFloat("animation", 1);
+		}
+		else
+		{
+			animator.SetFloat("animation", 0);
 		}
         
         if(Input.GetKey(KeyCode.UpArrow)) {
@@ -96,11 +100,6 @@ public class GnomeController : MonoBehaviour
         {
             grabClosest();
         }
-
-		if (!Input.anyKey)
-		{
-			animator.SetFloat("animation", 0);
-		}
 	}
 
     void OnCollisionEnter2D(Collision2D collision)

@@ -115,6 +115,11 @@ public class OgreController : MonoBehaviour
 			}
 			rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed;
 		}
+		else
+		{
+			if (isGrounded)
+				animSpeed = 0;
+		}
 
 		if (Input.GetKeyDown(KeyCode.W) && isGrounded)
         {
@@ -130,12 +135,6 @@ public class OgreController : MonoBehaviour
 			animSpeed = 0;
 			grabClosest();
         }
-
-		if (!Input.anyKey)
-		{
-			if (isGrounded)
-				animSpeed = 0;
-		}
 
 		if (isGrounded)
 		{

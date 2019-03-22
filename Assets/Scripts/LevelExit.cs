@@ -109,7 +109,7 @@ public class LevelExit : MonoBehaviour
 			level3.SetActive(false);
 
 		}
-		if (selectLevel == 2)
+		else if (selectLevel == 2)
 		{
 			level1.SetActive(false);
 			level2.SetActive(false);
