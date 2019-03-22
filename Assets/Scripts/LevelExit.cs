@@ -7,22 +7,43 @@ public class LevelExit : MonoBehaviour
 {
 	public int selectLevel;
 	public bool canExit = true;
+	public float transactionSpeed;
+	public float usingSystem = 1;
+	public float newXpos = 0;
 
 	public GameObject level1;
 	public GameObject level2;
 	public GameObject level3;
 
+	public GameObject cam;
+
 	private bool gnomeExit = false;
 	private bool ogreExit = false;
+	private bool exiting = false;
 
 	private GameObject ogre = null;
 	private GameObject gnome = null;
 
+	public GameObject haltingCollider;
+	public GameObject exitCollider;
+
 	void Start()
 	{
-		level1.SetActive(true);
-		level2.SetActive(false);
-		level3.SetActive(false);
+		if(usingSystem == 1)
+		{
+			level1.SetActive(true);
+			level2.SetActive(false);
+			level3.SetActive(false);
+		}
+		if (usingSystem == 2)
+		{
+			//haltingCollider = GameObject.Find("haltingCollider");
+			//exitCollider = GameObject.Find("exitCollider");
+
+			//dodo: set collider to progress to active
+			exitCollider.SetActive(true);
+			haltingCollider.SetActive(false);
+		}
 	}
 	void OnTriggerEnter2D(Collider2D collision)
 	{
@@ -45,6 +66,7 @@ public class LevelExit : MonoBehaviour
 			if (gnomeExit && ogreExit)
 			{
 				Debug.Log("We can switch scene");
+				exiting = true;
 				setNextLevel();
 			}
 		}
@@ -58,26 +80,45 @@ public class LevelExit : MonoBehaviour
 			Scene scene = SceneManager.GetActiveScene();
 			SceneManager.LoadScene(scene.name);
 		}
-
-		if (Input.GetKey(KeyCode.Alpha1))
+		if (usingSystem == 1)
 		{
-			level1.SetActive(true);
-			level2.SetActive(false);
-			level3.SetActive(false);
+			if (Input.GetKey(KeyCode.Alpha1))
+			{
+				level1.SetActive(true);
+				level2.SetActive(false);
+				level3.SetActive(false);
+			}
+
+			if (Input.GetKey(KeyCode.Alpha2))
+			{
+				level1.SetActive(false);
+				level2.SetActive(true);
+				level3.SetActive(false);
+			}
+
+			if (Input.GetKey(KeyCode.Alpha3))
+			{
+				level1.SetActive(false);
+				level2.SetActive(false);
+				level3.SetActive(true);
+			}
 		}
 
-		if (Input.GetKey(KeyCode.Alpha2))
+		else if (usingSystem == 2)
 		{
-			level1.SetActive(false);
-			level2.SetActive(true);
-			level3.SetActive(false);
-		}
+			if (exiting)
+			{
+				//todo: set collider to progress to inactive
+				//todo: set collider to backtrac to active
+				haltingCollider.SetActive(true);
+				exitCollider.SetActive(false);
 
-		if (Input.GetKey(KeyCode.Alpha3))
-		{
-			level1.SetActive(false);
-			level2.SetActive(false);
-			level3.SetActive(true);
+				Vector3 newPosition = cam.transform.position;
+				newPosition.x = newXpos;
+				//cam.transform.position = newPosition;//Vector2.Lerp(cam.transform.position, newPosition, transactionSpeed * Time.deltaTime);
+				cam.transform.position = Vector3.Lerp(cam.transform.position, newPosition, transactionSpeed * Time.deltaTime);
+				
+			}
 		}
 	}
 
@@ -97,16 +138,13 @@ public class LevelExit : MonoBehaviour
 
 	void setNextLevel()
 	{
-		if (selectLevel == 1)
+		if (usingSystem == 1)
 		{
-			//Debug.Log("should relocate");
-			//gnome.transform.position = new Vector3(-16.85f, -14.73015f, -40.3f);
-			//ogre.transform.position = new Vector3(-25.21f, -14.71885f, -38.5f);
-
-			//cam1.transform.position = new Vector3(-5.989776f, -1.957116f, -45);
-			level1.SetActive(false);
-			level2.SetActive(true);
-			level3.SetActive(false);
+			if (selectLevel == 1)
+			{
+				level1.SetActive(false);
+				level2.SetActive(true);
+				level3.SetActive(false);
 
 		}
 		else if (selectLevel == 2)
@@ -115,20 +153,8 @@ public class LevelExit : MonoBehaviour
 			level2.SetActive(false);
 			level3.SetActive(true);
 
+			}
 		}
-
-		//switch (selectLevel)
-		//{
-		//	case 1:
-		//		Debug.Log("should relocate");
-		//		gnome.transform.position = new Vector3(-16.85f, -14.73015f, -40.3f);
-		//		ogre.transform.position = new Vector3(-25.21f, -14.71885f, -38.5f);
-		//		break;
-		//	case 2:
-		//		break;
-		//	default:
-
-		//		break;
-		//}
+		
 	}
 }
