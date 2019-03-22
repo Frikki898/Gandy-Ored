@@ -49,7 +49,8 @@ public class OgreController : MonoBehaviour
                 holdingBox.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
                 holdingBox.beingHeld = false;
                 holdingBox.ogreSelection.SetActive(false);
-                holdingBox = null;
+				holdingBox.ogreHolding = false;
+				holdingBox = null;
             }
         }
 
@@ -196,17 +197,21 @@ public class OgreController : MonoBehaviour
             if (touchingBox != null)
             {
                 if(touchingBox.BoxType == BoxScript.BoxTypes.wood)
-                {
-                    movementSpeed = carrySpeed;
-                    holdingBox = touchingBox;
+				{
+					movementSpeed = carrySpeed;
+
+					holdingBox = touchingBox;
+					holdingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
                     holdingBox.beingHeld = true;
                     holdingBox.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
                     holdingBox.rb.mass = 1;
                     holdingBox.ogreSelection.SetActive(true);
+					holdingBox.ogreHolding = true;
                 } 
                 else if(touchingBox.BoxType == BoxScript.BoxTypes.steel)
                 {
                     movementSpeed = carrySpeed;
+
                     holdingBox = touchingBox;
                     holdingBox.beingHeld = true;
                     holdingBox.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
@@ -231,7 +236,8 @@ public class OgreController : MonoBehaviour
             holdingBox.beingHeld = false;
             holdingBox.rb.mass = 10;
             holdingBox.ogreSelection.SetActive(false);
-            holdingBox = null;
+			holdingBox.ogreHolding = false;
+			holdingBox = null;
         }
     }
 

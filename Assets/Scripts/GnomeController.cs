@@ -46,7 +46,7 @@ public class GnomeController : MonoBehaviour
 
             if(holdingABox && touchingBox != floatingBox)
             {
-                grabClosest();
+                grabClosest(false);
             }
 			animator.SetFloat("animation", 1);
         }
@@ -62,12 +62,20 @@ public class GnomeController : MonoBehaviour
 
             if (holdingABox && touchingBox != floatingBox)
             {
-                grabClosest();
+                grabClosest(false);
             }
 			animator.SetFloat("animation", 1);
 		}
-        
-        if(Input.GetKey(KeyCode.UpArrow)) {
+
+		if(floatingBox != null)
+		{ 
+			if (floatingBox.ogreHolding == true && holdingABox)
+			{
+				grabClosest(false);
+			}
+		}
+
+		if (Input.GetKey(KeyCode.UpArrow)) {
             if(holdingABox) {
                 floatingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
                 floatingBox.GetComponent<Rigidbody2D>().velocity += Vector2.up * Time.deltaTime * levitationSpeed;
@@ -89,12 +97,16 @@ public class GnomeController : MonoBehaviour
         }
         if (floatingBox) {
             if(!Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.UpArrow)) {
-                floatingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;    
+
+				if (floatingBox.ogreHolding == false)
+				{
+					floatingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+				}
             }
         }
         if(Input.GetKeyDown(KeyCode.RightControl))
         {
-            grabClosest();
+            grabClosest(true);
         }
 
 		if (!Input.anyKey)
@@ -143,12 +155,15 @@ public class GnomeController : MonoBehaviour
         {
             touchingBox = null;
         }
-
-
     }
 
-    public void grabClosest()
+    public void grabClosest(bool pressActivate)
     {
+		if (pressActivate && holdingABox) {
+			nextPressWillDrop = true;
+			holdingABox = false;
+		}
+
         if(nextPressWillDrop)
         {
             floatingBox.GetComponent<Rigidbody2D>().gravityScale = 25;
@@ -187,7 +202,7 @@ public class GnomeController : MonoBehaviour
                         floatingBox.gnomeSelection.SetActive(true);
                         //Debug.Log("grabbed " + touchingBox);
                     }
-                    else if (touchingBox.BoxType == BoxScript.BoxTypes.wood)
+                    else if (touchingBox.BoxType == BoxScript.BoxTypes.led)
                     {
                         Debug.Log("Needs help to move this");
                         //todo: add visual feedback that he needs help
