@@ -20,6 +20,7 @@ public class LevelExit : MonoBehaviour
 	private bool gnomeExit = false;
 	private bool ogreExit = false;
 	private bool exiting = false;
+	private bool canMoveCamera = true;
 
 	private GameObject ogre = null;
 	private GameObject gnome = null;
@@ -39,8 +40,7 @@ public class LevelExit : MonoBehaviour
 		{
 			//haltingCollider = GameObject.Find("haltingCollider");
 			//exitCollider = GameObject.Find("exitCollider");
-
-			//dodo: set collider to progress to active
+			
 			exitCollider.SetActive(true);
 			haltingCollider.SetActive(false);
 		}
@@ -108,15 +108,21 @@ public class LevelExit : MonoBehaviour
 		{
 			if (exiting)
 			{
-				//todo: set collider to progress to inactive
-				//todo: set collider to backtrac to active
 				haltingCollider.SetActive(true);
 				exitCollider.SetActive(false);
 
 				Vector3 newPosition = cam.transform.position;
 				newPosition.x = newXpos;
-				//cam.transform.position = newPosition;//Vector2.Lerp(cam.transform.position, newPosition, transactionSpeed * Time.deltaTime);
-				cam.transform.position = Vector3.Lerp(cam.transform.position, newPosition, transactionSpeed * Time.deltaTime);
+
+				if(canMoveCamera)
+					cam.transform.position = Vector3.Lerp(cam.transform.position, newPosition, transactionSpeed * Time.deltaTime);
+
+				if (newPosition.x - cam.transform.position.x < 0.08)
+				{
+					canMoveCamera = false;
+					//Debug.Log("shutting down");
+					//GetComponent<LevelExit>().enabled = false;
+				}
 				
 			}
 		}

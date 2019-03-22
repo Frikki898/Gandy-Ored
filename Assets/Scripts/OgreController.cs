@@ -222,9 +222,22 @@ public class OgreController : MonoBehaviour
                     Debug.Log("Cannot pick up magic");
                     //todo: add visual feedback that cube cant be picked up
                 }
-                else if(touchingBox.BoxType == BoxScript.BoxTypes.wood)
+                else if(touchingBox.BoxType == BoxScript.BoxTypes.led)
                 {
                     Debug.Log("Needs help to move this");
+
+					if (touchingBox.gnomeHolding)
+					{
+						movementSpeed = carrySpeed;
+
+						holdingBox = touchingBox;
+						holdingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+						holdingBox.beingHeld = true;
+						holdingBox.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+						holdingBox.rb.mass = 1;
+						holdingBox.ogreSelection.SetActive(true);
+						holdingBox.ogreHolding = true;
+					}
                     //todo: add visual feedback that he needs help
                 }
             }

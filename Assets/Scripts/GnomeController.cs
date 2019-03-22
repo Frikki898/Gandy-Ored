@@ -16,6 +16,8 @@ public class GnomeController : MonoBehaviour
     private bool onLadder = false;
 	private bool facingLeft = false;
 
+	private float initLevetation;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -66,9 +68,14 @@ public class GnomeController : MonoBehaviour
             }
 			animator.SetFloat("animation", 1);
 		}
+		else
+		{
+			animator.SetFloat("animation", 0);
+		}
 
-		if(floatingBox != null)
-		{ 
+		if (floatingBox != null)
+		{
+
 			if (floatingBox.ogreHolding == true && holdingABox)
 			{
 				grabClosest(false);
@@ -76,9 +83,13 @@ public class GnomeController : MonoBehaviour
 		}
 
 		if (Input.GetKey(KeyCode.UpArrow)) {
-            if(holdingABox) {
-                floatingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
-                floatingBox.GetComponent<Rigidbody2D>().velocity += Vector2.up * Time.deltaTime * levitationSpeed;
+            if(holdingABox)
+			{
+				if ((floatingBox.BoxType == BoxScript.BoxTypes.led && floatingBox.transform.position.y - initLevetation < 0.1) || floatingBox.BoxType != BoxScript.BoxTypes.led)
+				{
+					floatingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+					floatingBox.GetComponent<Rigidbody2D>().velocity += Vector2.up * Time.deltaTime * levitationSpeed;
+				}
             }
             else if(onLadder)
             {
@@ -86,10 +97,14 @@ public class GnomeController : MonoBehaviour
             }
         }
         if(Input.GetKey(KeyCode.DownArrow)) {
-            if(holdingABox) {
-                floatingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;    
-                floatingBox.GetComponent<Rigidbody2D>().velocity += Vector2.down * Time.deltaTime * levitationSpeed;
-            }
+            if(holdingABox)
+			{
+				if ((floatingBox.BoxType == BoxScript.BoxTypes.led && floatingBox.transform.position.y - initLevetation < 0.2) || floatingBox.BoxType != BoxScript.BoxTypes.led)
+				{
+					floatingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+					floatingBox.GetComponent<Rigidbody2D>().velocity += Vector2.down * Time.deltaTime * levitationSpeed;
+				}
+			}
             else if (onLadder)
             {
                 rigid.velocity += Vector2.down * Time.deltaTime * climbSpeed;
@@ -165,6 +180,7 @@ public class GnomeController : MonoBehaviour
             floatingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
             floatingBox.beingHeld = false;
             floatingBox.gnomeSelection.SetActive(false);
+			floatingBox.gnomeHolding = false;
             floatingBox = null;
             nextPressWillDrop = false;
         }
@@ -200,8 +216,16 @@ public class GnomeController : MonoBehaviour
                     else if (touchingBox.BoxType == BoxScript.BoxTypes.led)
                     {
                         Debug.Log("Needs help to move this");
-                        //todo: add visual feedback that he needs help
-                    }
+
+						floatingBox = touchingBox;
+						floatingBox.beingHeld = true;
+						holdingABox = true;
+						touchingBox.GetComponent<Rigidbody2D>().gravityScale = 0;
+						floatingBox.gnomeSelection.SetActive(true);
+						initLevetation = floatingBox.transform.position.y;
+						floatingBox.gnomeHolding = true;
+						//todo: add visual feedback that he needs help
+					}
                 }
             }
         }
