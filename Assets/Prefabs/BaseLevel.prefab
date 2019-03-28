@@ -201,6 +201,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 936628811278065649}
     m_Modifications:
+    - target: {fileID: 3321091319664703799, guid: 690ef159b213ceb4d80faa9a9b58723b,
+        type: 3}
+      propertyPath: m_Name
+      value: LevelBorders
+      objectReference: {fileID: 0}
     - target: {fileID: 3321091320862320386, guid: 690ef159b213ceb4d80faa9a9b58723b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -256,10 +261,45 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3321091319664703799, guid: 690ef159b213ceb4d80faa9a9b58723b,
+    - target: {fileID: 3321091319606218042, guid: 690ef159b213ceb4d80faa9a9b58723b,
         type: 3}
-      propertyPath: m_Name
-      value: LevelBorders
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3321091319606218042, guid: 690ef159b213ceb4d80faa9a9b58723b,
+        type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3321091319746123898, guid: 690ef159b213ceb4d80faa9a9b58723b,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3321091319746123898, guid: 690ef159b213ceb4d80faa9a9b58723b,
+        type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3321091319491397860, guid: 690ef159b213ceb4d80faa9a9b58723b,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3321091319491397860, guid: 690ef159b213ceb4d80faa9a9b58723b,
+        type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3321091320478779338, guid: 690ef159b213ceb4d80faa9a9b58723b,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3321091320478779338, guid: 690ef159b213ceb4d80faa9a9b58723b,
+        type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 690ef159b213ceb4d80faa9a9b58723b, type: 3}

@@ -180,8 +180,8 @@ MonoBehaviour:
   jumpForce: 80
   isGrounded: 1
   movementSpeed: 0
-  runSpeed: 120
-  carrySpeed: 75
+  runSpeed: 180
+  carrySpeed: 150
 --- !u!1 &4523884601438003079
 GameObject:
   m_ObjectHideFlags: 0

@@ -125,6 +125,7 @@ MonoBehaviour:
   beingHeld: 0
   gnomeSelection: {fileID: 8228776904703987892}
   ogreSelection: {fileID: 4665626775887658156}
+  gnomeOnTop: {fileID: 0}
 --- !u!50 &3271181844680107321
 Rigidbody2D:
   serializedVersion: 4
@@ -141,7 +142,7 @@ Rigidbody2D:
   m_LinearDrag: 13
   m_AngularDrag: 0.05
   m_GravityScale: 25
-  m_Material: {fileID: 6200000, guid: 24a896abfc7653c49b9e906a7342b7f2, type: 2}
+  m_Material: {fileID: 0}
   m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1

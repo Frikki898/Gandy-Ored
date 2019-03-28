@@ -18,6 +18,15 @@ public class OgreController : MonoBehaviour
 	private float animSpeed = 1;
 	private bool facingLeft = false;
 
+    private enum grabSide
+    {
+        left,
+        right,
+        none
+    };
+
+    private grabSide gSide = grabSide.none;
+
 	// Start is called before the first frame update
 	void Start()
     {
@@ -52,15 +61,30 @@ public class OgreController : MonoBehaviour
                 holdingBox = null;
             }
         }
+        Debug.Log(gSide);
 
-		if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.A))
 		{
-			if (!facingLeft)
+            if (isGrounded)
+            {
+                rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed;
+            }
+            else
+            {
+                rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed * 0.5f;
+            }
+
+            if (!facingLeft)
 			{
 				if (holdingBox != null)
 				{
+                    if(gSide == grabSide.left)
+                    {
+                        //Debug.Log("pulling");
+                        holdingBox.rb.velocity += Vector2.left * Time.deltaTime * 5;
+                    }
 					holdingBox.rb.velocity += Vector2.left * Time.deltaTime * movementSpeed;
-					animSpeed = -0.6f;
+                    animSpeed = -0.6f;
 				}
 				else
 				{
@@ -73,26 +97,42 @@ public class OgreController : MonoBehaviour
 			{
 				if (holdingBox != null)
 				{
-					holdingBox.rb.velocity += Vector2.left * Time.deltaTime * movementSpeed;
-					animSpeed = 0.6f;
+                    if (gSide == grabSide.left)
+                    {
+                        holdingBox.rb.velocity += Vector2.left * Time.deltaTime * 5;
+                    }
+                    holdingBox.rb.velocity += Vector2.left * Time.deltaTime * movementSpeed;
+                    animSpeed = 0.6f;
 				}
 				else
 				{
 					animSpeed = 1f;
 				}
 			}
-
-			rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed;
-
 		}
 		else if (Input.GetKey(KeyCode.D))
 		{
-			if (facingLeft)
+            
+            if (isGrounded)
+            {
+                rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed;
+            }
+            else
+            {
+                rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed * 0.5f;
+            }
+
+            if (facingLeft)
 			{
 				if (holdingBox != null)
 				{
-					holdingBox.rb.velocity += Vector2.right * Time.deltaTime * movementSpeed;
-					animSpeed = -0.6f;
+                    if (gSide == grabSide.right)
+                    {
+                        holdingBox.rb.velocity += Vector2.right * Time.deltaTime * 5;
+                        Debug.Log("pulling");
+                    }
+                    holdingBox.rb.velocity += Vector2.right * Time.deltaTime * movementSpeed;
+                    animSpeed = -0.6f;
 				}
 				else
 				{
@@ -105,7 +145,12 @@ public class OgreController : MonoBehaviour
 			{
 				if (holdingBox != null)
 				{
-					holdingBox.rb.velocity += Vector2.right * Time.deltaTime * movementSpeed;
+                    if (gSide == grabSide.right)
+                    {
+                        holdingBox.rb.velocity += Vector2.right * Time.deltaTime * 5;
+                        Debug.Log("pulling");
+                    }
+                    holdingBox.rb.velocity += Vector2.right * Time.deltaTime * movementSpeed;
 					animSpeed = 0.6f;
 				}
 				else
@@ -113,7 +158,6 @@ public class OgreController : MonoBehaviour
 					animSpeed = 1f;
 				}
 			}
-			rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed;
 		}
 
 		if (Input.GetKeyDown(KeyCode.W) && isGrounded)
@@ -161,11 +205,19 @@ public class OgreController : MonoBehaviour
             if (contactPoint.x > center.x + collision.gameObject.transform.localScale.x / 2)
             {
                 touchingBox = collision.gameObject.GetComponent<BoxScript>();
+                if (holdingBox == null)
+                {
+                    gSide = grabSide.right;
+                }
                 Debug.Log("To the right");
             }
             if (contactPoint.x < center.x - collision.gameObject.transform.localScale.x / 2)
             {
                 touchingBox = collision.gameObject.GetComponent<BoxScript>();
+                if(holdingBox == null)
+                {
+                    gSide = grabSide.left;
+                }
                 Debug.Log("To the left");
             }
         }

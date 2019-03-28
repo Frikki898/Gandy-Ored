@@ -16,6 +16,11 @@ public class GnomeController : MonoBehaviour
     private bool onLadder = false;
 	private bool facingLeft = false;
 
+    public Rigidbody2D getRigid()
+    {
+        return rigid;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -110,6 +115,24 @@ public class GnomeController : MonoBehaviour
         {
             //Debug.Log("Touching a box");
             touchingBox = collision.gameObject.GetComponent<BoxScript>();
+
+            Vector3 center = collision.collider.bounds.center;
+            Vector3 contactPoint = collision.contacts[0].point;
+
+            if (contactPoint.x > center.x + collision.gameObject.transform.localScale.x / 2)
+            {
+                
+            }
+            else if (contactPoint.x < center.x - collision.gameObject.transform.localScale.x / 2)
+            {
+                
+            }
+            else
+            {
+                //touchingBox.gnomeOnTop = this;
+                //Debug.Log("on top of box");
+            }
+
         }
     }
 
@@ -140,11 +163,9 @@ public class GnomeController : MonoBehaviour
     {
         BoxScript b = collision.gameObject.GetComponent<BoxScript>();
         if (b != null)
-        {
+        {   
             touchingBox = null;
         }
-
-
     }
 
     public void grabClosest()
