@@ -50,6 +50,14 @@ public class OgreController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(holdingBox)
+        {
+            if(Vector3.Distance(holdingBox.transform.position, this.transform.position) > fromFloatingBox + 0.2f)
+            {
+                grabClosest();
+            }
+        }
+
         if(holdingBox != null)
         {
             if (Mathf.Abs(holdingBox.GetComponent<Rigidbody2D>().velocity.y) >= ychange || Mathf.Abs(rigid.velocity.y) >= ychange)
@@ -59,122 +67,120 @@ public class OgreController : MonoBehaviour
                 holdingBox.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
                 holdingBox.beingHeld = false;
                 holdingBox.ogreSelection.SetActive(false);
-                holdingBox = null;
+				holdingBox.ogreHolding = false;
+				holdingBox = null;
             }
         }
         //Debug.Log(gSide);
 
         if (Input.GetKey(KeyCode.A))
 		{
-            if (isGrounded)
+            if(holdingBox)
             {
-                rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed;
+                if(gSide == grabSide.left)
+                {
+                    if(holdingBox.gnomeHolding)
+                    {
+                        holdingBox.rb.velocity += Vector2.left * Time.deltaTime * movementSpeed;
+                    }
+                    else
+                    {
+                        holdingBox.rb.velocity += Vector2.left * Time.deltaTime * movementSpeed*2;
+                    }
+                }
+                else
+                {
+                    if (holdingBox.gnomeHolding)
+                    {
+                        rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed;
+                    }
+                    else
+                    {
+                        rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed * 2;
+                    }
+                }
+                if(!facingLeft)
+                {
+                    animSpeed = -0.6f;
+                }
+                else
+                {
+                    facingLeft = true;
+                    rigid.transform.eulerAngles = new Vector2(0, -80);
+                    animSpeed = 0.6f;
+                }
             }
             else
             {
-                rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed * 0.5f;
+                if(isGrounded)
+                {
+                    rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed;
+                }
+                else
+                {
+                    rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed * 0.5f;
+                }
+                facingLeft = true;
+                rigid.transform.eulerAngles = new Vector2(0, -80);
+                animSpeed = 1f;
             }
-
-            if (!facingLeft)
-			{
-				if (holdingBox != null)
-				{
-                    if(gSide == grabSide.left)
-                    {
-                        //Debug.Log("pulling");
-                        holdingBox.rb.velocity += Vector2.left * Time.deltaTime * 5;
-                    }
-                    else
-                    {
-                        rigid.velocity += Vector2.left * Time.deltaTime * 5;
-                    }
-					holdingBox.rb.velocity += Vector2.left * Time.deltaTime * movementSpeed;
-                    animSpeed = -0.6f;
-				}
-				else
-				{
-					facingLeft = true;
-					rigid.transform.eulerAngles = new Vector2(0, -80);
-					animSpeed = 1f;
-				}
-			}
-			else
-			{
-				if (holdingBox != null)
-				{
-                    if (gSide == grabSide.left)
-                    {
-                        holdingBox.rb.velocity += Vector2.left * Time.deltaTime * 5;
-                    }
-                    else
-                    {
-                        rigid.velocity += Vector2.left * Time.deltaTime * 5;
-                    }
-                    holdingBox.rb.velocity += Vector2.left * Time.deltaTime * movementSpeed;
-                    animSpeed = 0.6f;
-				}
-				else
-				{
-					animSpeed = 1f;
-				}
-			}
 		}
 		else if (Input.GetKey(KeyCode.D))
 		{
-            
-            if (isGrounded)
+            if (holdingBox)
             {
-                rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed;
+                if (gSide == grabSide.right)
+                {
+                    if (holdingBox.gnomeHolding)
+                    {
+                        holdingBox.rb.velocity += Vector2.right * Time.deltaTime * movementSpeed;
+                    }
+                    else
+                    {
+                        holdingBox.rb.velocity += Vector2.right * Time.deltaTime * movementSpeed * 2;
+                    }
+                }
+                else
+                {
+                    if (holdingBox.gnomeHolding)
+                    {
+                        rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed;
+                    }
+                    else
+                    {
+                        rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed * 2;
+                    }
+                }
+                if (!facingLeft)
+                {
+                    animSpeed = 0.6f;
+                }
+                else
+                {
+                    facingLeft = true;
+                    rigid.transform.eulerAngles = new Vector2(0, -80);
+                    animSpeed = -0.6f;
+                }
             }
             else
             {
-                rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed * 0.5f;
+                if (isGrounded)
+                {
+                    rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed;
+                }
+                else
+                {
+                    rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed * 0.5f;
+                }
+                facingLeft = false;
+                rigid.transform.eulerAngles = new Vector2(0, 100);
+                animSpeed = 1f;
             }
-
-            if (facingLeft)
-			{
-				if (holdingBox != null)
-				{
-                    if (gSide == grabSide.right)
-                    {
-                        holdingBox.rb.velocity += Vector2.right * Time.deltaTime * 5;
-                        Debug.Log("pulling");
-                    }
-                    else
-                    {
-                        rigid.velocity += Vector2.right * Time.deltaTime * 5;
-                    }
-                    holdingBox.rb.velocity += Vector2.right * Time.deltaTime * movementSpeed;
-                    animSpeed = -0.6f;
-				}
-				else
-				{
-					facingLeft = false;
-					rigid.transform.eulerAngles = new Vector2(0, 100);
-					animSpeed = 1f;
-				}
-			}
-			else
-			{
-				if (holdingBox != null)
-				{
-                    if (gSide == grabSide.right)
-                    {
-                        holdingBox.rb.velocity += Vector2.right * Time.deltaTime * 5;
-                        Debug.Log("pulling");
-                    }
-                    else
-                    {
-                        rigid.velocity += Vector2.right * Time.deltaTime * 5;
-                    }
-                    holdingBox.rb.velocity += Vector2.right * Time.deltaTime * movementSpeed;
-					animSpeed = 0.6f;
-				}
-				else
-				{
-					animSpeed = 1f;
-				}
-			}
+        }
+		else
+		{
+			if (isGrounded)
+				animSpeed = 0;
 		}
 
 		if (Input.GetKeyDown(KeyCode.W) && isGrounded)
@@ -191,12 +197,6 @@ public class OgreController : MonoBehaviour
 			animSpeed = 0;
 			grabClosest();
         }
-
-		if (!Input.anyKey)
-		{
-			if (isGrounded)
-				animSpeed = 0;
-		}
 
 		if (isGrounded)
 		{
@@ -247,19 +247,13 @@ public class OgreController : MonoBehaviour
         BoxScript b = collision.gameObject.GetComponent<BoxScript>();
         if(b != null)
         {
-            Debug.Log(b.name);
-            //Debug.Log("getting in here");
             if (b == holdingBox)    
             {
                 if (Vector3.Distance(this.transform.position, holdingBox.transform.position) > fromFloatingBox + 1)
                 {
                     grabClosest();
                 }
-                //Debug.Log("not getting in here");
-                //releasing the box if i move away form it
-                //grabClosest();
             }
-            //Debug.Log("stopped touching box");
             touchingBox = null;
         }
     }
@@ -271,18 +265,22 @@ public class OgreController : MonoBehaviour
             if (touchingBox != null)
             {
                 if(touchingBox.BoxType == BoxScript.BoxTypes.wood)
-                {
-                    movementSpeed = carrySpeed;
-                    holdingBox = touchingBox;
+				{
+					movementSpeed = carrySpeed;
+
+					holdingBox = touchingBox;
+					holdingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
                     holdingBox.beingHeld = true;
                     holdingBox.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
                     holdingBox.rb.mass = 1;
                     holdingBox.ogreSelection.SetActive(true);
                     fromFloatingBox = Vector3.Distance(this.transform.position, holdingBox.transform.position);
+					holdingBox.ogreHolding = true;
                 } 
                 else if(touchingBox.BoxType == BoxScript.BoxTypes.steel)
                 {
                     movementSpeed = carrySpeed;
+
                     holdingBox = touchingBox;
                     holdingBox.beingHeld = true;
                     holdingBox.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
@@ -295,9 +293,22 @@ public class OgreController : MonoBehaviour
                     Debug.Log("Cannot pick up magic");
                     //todo: add visual feedback that cube cant be picked up
                 }
-                else if(touchingBox.BoxType == BoxScript.BoxTypes.wood)
+                else if(touchingBox.BoxType == BoxScript.BoxTypes.led)
                 {
                     Debug.Log("Needs help to move this");
+
+					if (touchingBox.gnomeHolding)
+					{
+						movementSpeed = carrySpeed;
+
+						holdingBox = touchingBox;
+						holdingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+						holdingBox.beingHeld = true;
+						holdingBox.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+						holdingBox.rb.mass = 1;
+						holdingBox.ogreSelection.SetActive(true);
+						holdingBox.ogreHolding = true;
+					}
                     //todo: add visual feedback that he needs help
                 }
             }
@@ -308,7 +319,8 @@ public class OgreController : MonoBehaviour
             holdingBox.beingHeld = false;
             holdingBox.rb.mass = 10;
             holdingBox.ogreSelection.SetActive(false);
-            holdingBox = null;
+			holdingBox.ogreHolding = false;
+			holdingBox = null;
         }
     }
 

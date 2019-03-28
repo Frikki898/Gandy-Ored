@@ -15,11 +15,15 @@ public class GnomeController : MonoBehaviour
     private bool nextPressWillDrop = false;
     private bool onLadder = false;
 	private bool facingLeft = false;
+    private bool isGrounded;
+
 
     public Rigidbody2D getRigid()
     {
         return rigid;
     }
+
+	private float initLevetation;
 
     // Start is called before the first frame update
     void Start()
@@ -38,44 +42,91 @@ public class GnomeController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        isGrounded = false;
+        if (rigid.velocity.y == 0)
+        {
+            isGrounded = true;
+        }
+
         //Debug.Log("arrows");
         if (Input.GetKey(KeyCode.LeftArrow))
-        {
+		{
 			if (!facingLeft)
 			{
 				facingLeft = true;
 				rigid.transform.eulerAngles = new Vector2(0, -89);
 			}
 
-            rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed;
+
+            if (rigid.gravityScale == 0)
+            {
+                rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed * 0.4f;
+            }
+            else if(isGrounded)
+            {
+                rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed;
+            }
+            else
+            {
+                rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed * 0.5f;
+            }
+			
 
             if(holdingABox && touchingBox != floatingBox)
             {
-                grabClosest();
+                grabClosest(false);
             }
 			animator.SetFloat("animation", 1);
-        }
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
+		}
+		else if (Input.GetKey(KeyCode.RightArrow))
+		{
 			if (facingLeft)
 			{
 				facingLeft = false;
 				rigid.transform.eulerAngles = new Vector2(0, 89);
 			}
 
-            rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed;
+            if (rigid.gravityScale == 0)
+            {
+                rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed * 0.4f;
+            }
+            else if (isGrounded)
+            {
+                rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed;
+            }
+            else
+            {
+                rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed * 0.5f;
+            }
 
             if (holdingABox && touchingBox != floatingBox)
             {
-                grabClosest();
+                grabClosest(false);
             }
 			animator.SetFloat("animation", 1);
 		}
-        
-        if(Input.GetKey(KeyCode.UpArrow)) {
-            if(holdingABox) {
-                floatingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
-                floatingBox.GetComponent<Rigidbody2D>().velocity += Vector2.up * Time.deltaTime * levitationSpeed;
+		else
+		{
+			animator.SetFloat("animation", 0);
+		}
+
+		if (floatingBox != null)
+		{
+
+			if (floatingBox.ogreHolding == true && holdingABox)
+			{
+				grabClosest(false);
+			}
+		}
+
+		if (Input.GetKey(KeyCode.UpArrow)) {
+            if(holdingABox)
+			{
+				if ((floatingBox.BoxType == BoxScript.BoxTypes.led && floatingBox.transform.position.y - initLevetation < 0.1) || floatingBox.BoxType != BoxScript.BoxTypes.led)
+				{
+					floatingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+					floatingBox.GetComponent<Rigidbody2D>().velocity += Vector2.up * Time.deltaTime * levitationSpeed;
+				}
             }
             else if(onLadder)
             {
@@ -83,10 +134,14 @@ public class GnomeController : MonoBehaviour
             }
         }
         if(Input.GetKey(KeyCode.DownArrow)) {
-            if(holdingABox) {
-                floatingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;    
-                floatingBox.GetComponent<Rigidbody2D>().velocity += Vector2.down * Time.deltaTime * levitationSpeed;
-            }
+            if(holdingABox)
+			{
+				if ((floatingBox.BoxType == BoxScript.BoxTypes.led && floatingBox.transform.position.y - initLevetation < 0.2) || floatingBox.BoxType != BoxScript.BoxTypes.led)
+				{
+					floatingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+					floatingBox.GetComponent<Rigidbody2D>().velocity += Vector2.down * Time.deltaTime * levitationSpeed;
+				}
+			}
             else if (onLadder)
             {
                 rigid.velocity += Vector2.down * Time.deltaTime * climbSpeed;
@@ -94,18 +149,17 @@ public class GnomeController : MonoBehaviour
         }
         if (floatingBox) {
             if(!Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.UpArrow)) {
-                floatingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;    
+
+				if (floatingBox.ogreHolding == false)
+				{
+					floatingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+				}
             }
         }
         if(Input.GetKeyDown(KeyCode.RightControl))
         {
-            grabClosest();
+            grabClosest(true);
         }
-
-		if (!Input.anyKey)
-		{
-			animator.SetFloat("animation", 0);
-		}
 	}
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -129,7 +183,7 @@ public class GnomeController : MonoBehaviour
             }
             else
             {
-                //touchingBox.gnomeOnTop = this;
+                rigid.gravityScale = 0;
                 //Debug.Log("on top of box");
             }
 
@@ -163,19 +217,26 @@ public class GnomeController : MonoBehaviour
     {
         BoxScript b = collision.gameObject.GetComponent<BoxScript>();
         if (b != null)
-        {   
+        {
+            rigid.gravityScale = 25;
             touchingBox = null;
         }
     }
 
-    public void grabClosest()
+    public void grabClosest(bool pressActivate)
     {
+		if (pressActivate && holdingABox) {
+			nextPressWillDrop = true;
+			holdingABox = false;
+		}
+
         if(nextPressWillDrop)
         {
             floatingBox.GetComponent<Rigidbody2D>().gravityScale = 25;
             floatingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
             floatingBox.beingHeld = false;
             floatingBox.gnomeSelection.SetActive(false);
+			floatingBox.gnomeHolding = false;
             floatingBox = null;
             nextPressWillDrop = false;
         }
@@ -192,6 +253,7 @@ public class GnomeController : MonoBehaviour
                         holdingABox = true;
                         touchingBox.GetComponent<Rigidbody2D>().gravityScale = 0;
                         floatingBox.gnomeSelection.SetActive(true);
+                        floatingBox.gnomeHolding = true;
                         //Debug.Log("grabbed " + touchingBox);
                     }
                     else if (touchingBox.BoxType == BoxScript.BoxTypes.steel)
@@ -206,13 +268,22 @@ public class GnomeController : MonoBehaviour
                         holdingABox = true;
                         touchingBox.GetComponent<Rigidbody2D>().gravityScale = 0;
                         floatingBox.gnomeSelection.SetActive(true);
+                        floatingBox.gnomeHolding = true;
                         //Debug.Log("grabbed " + touchingBox);
                     }
-                    else if (touchingBox.BoxType == BoxScript.BoxTypes.wood)
+                    else if (touchingBox.BoxType == BoxScript.BoxTypes.led)
                     {
                         Debug.Log("Needs help to move this");
-                        //todo: add visual feedback that he needs help
-                    }
+
+						floatingBox = touchingBox;
+						floatingBox.beingHeld = true;
+						holdingABox = true;
+						touchingBox.GetComponent<Rigidbody2D>().gravityScale = 0;
+						floatingBox.gnomeSelection.SetActive(true);
+						initLevetation = floatingBox.transform.position.y;
+						floatingBox.gnomeHolding = true;
+						//todo: add visual feedback that he needs help
+					}
                 }
             }
         }
