@@ -17,6 +17,7 @@ public class OgreController : MonoBehaviour
     private float ychange = 1;
 	private float animSpeed = 1;
 	private bool facingLeft = false;
+    private float fromFloatingBox;
 
     private enum grabSide
     {
@@ -61,7 +62,7 @@ public class OgreController : MonoBehaviour
                 holdingBox = null;
             }
         }
-        Debug.Log(gSide);
+        //Debug.Log(gSide);
 
         if (Input.GetKey(KeyCode.A))
 		{
@@ -83,6 +84,10 @@ public class OgreController : MonoBehaviour
                         //Debug.Log("pulling");
                         holdingBox.rb.velocity += Vector2.left * Time.deltaTime * 5;
                     }
+                    else
+                    {
+                        rigid.velocity += Vector2.left * Time.deltaTime * 5;
+                    }
 					holdingBox.rb.velocity += Vector2.left * Time.deltaTime * movementSpeed;
                     animSpeed = -0.6f;
 				}
@@ -100,6 +105,10 @@ public class OgreController : MonoBehaviour
                     if (gSide == grabSide.left)
                     {
                         holdingBox.rb.velocity += Vector2.left * Time.deltaTime * 5;
+                    }
+                    else
+                    {
+                        rigid.velocity += Vector2.left * Time.deltaTime * 5;
                     }
                     holdingBox.rb.velocity += Vector2.left * Time.deltaTime * movementSpeed;
                     animSpeed = 0.6f;
@@ -131,6 +140,10 @@ public class OgreController : MonoBehaviour
                         holdingBox.rb.velocity += Vector2.right * Time.deltaTime * 5;
                         Debug.Log("pulling");
                     }
+                    else
+                    {
+                        rigid.velocity += Vector2.right * Time.deltaTime * 5;
+                    }
                     holdingBox.rb.velocity += Vector2.right * Time.deltaTime * movementSpeed;
                     animSpeed = -0.6f;
 				}
@@ -149,6 +162,10 @@ public class OgreController : MonoBehaviour
                     {
                         holdingBox.rb.velocity += Vector2.right * Time.deltaTime * 5;
                         Debug.Log("pulling");
+                    }
+                    else
+                    {
+                        rigid.velocity += Vector2.right * Time.deltaTime * 5;
                     }
                     holdingBox.rb.velocity += Vector2.right * Time.deltaTime * movementSpeed;
 					animSpeed = 0.6f;
@@ -225,18 +242,24 @@ public class OgreController : MonoBehaviour
 
     void OnCollisionExit2D(Collision2D collision)
     {
+        Debug.Log("exiting");
         isGrounded = false;
         BoxScript b = collision.gameObject.GetComponent<BoxScript>();
-        if (b != null)
+        if(b != null)
         {
-            Debug.Log("getting in here");
-            if (b == holdingBox)
+            Debug.Log(b.name);
+            //Debug.Log("getting in here");
+            if (b == holdingBox)    
             {
-                Debug.Log("not getting in here");
+                if (Vector3.Distance(this.transform.position, holdingBox.transform.position) > fromFloatingBox + 1)
+                {
+                    grabClosest();
+                }
+                //Debug.Log("not getting in here");
                 //releasing the box if i move away form it
-                grabClosest();
+                //grabClosest();
             }
-            Debug.Log("stopped touching box");
+            //Debug.Log("stopped touching box");
             touchingBox = null;
         }
     }
@@ -255,6 +278,7 @@ public class OgreController : MonoBehaviour
                     holdingBox.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
                     holdingBox.rb.mass = 1;
                     holdingBox.ogreSelection.SetActive(true);
+                    fromFloatingBox = Vector3.Distance(this.transform.position, holdingBox.transform.position);
                 } 
                 else if(touchingBox.BoxType == BoxScript.BoxTypes.steel)
                 {
@@ -264,6 +288,7 @@ public class OgreController : MonoBehaviour
                     holdingBox.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
                     holdingBox.rb.mass = 1;
                     holdingBox.ogreSelection.SetActive(true);
+                    fromFloatingBox = Vector3.Distance(this.transform.position, holdingBox.transform.position);
                 }
                 else if(touchingBox.BoxType == BoxScript.BoxTypes.magic)
                 {
@@ -291,7 +316,7 @@ public class OgreController : MonoBehaviour
     private float lastFrameVelo;
     void OnCollisionStay2D()
     {
-        if (rigid.velocity.y == 0 && lastFrameVelo == 0)
+        if (rigid.velocity.y == 0)
         {
             isGrounded = true;
         }

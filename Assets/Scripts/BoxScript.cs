@@ -44,7 +44,7 @@ public class BoxScript : MonoBehaviour
     {
         if (!beingHeld)
         {
-            rb.mass = 10;
+            rb.mass = 1000;
             rb.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX;
         }
     }
