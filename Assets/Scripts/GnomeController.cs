@@ -15,6 +15,7 @@ public class GnomeController : MonoBehaviour
     private bool nextPressWillDrop = false;
     private bool onLadder = false;
 	private bool facingLeft = false;
+	private float ychange = 1;
 
 	private float initLevetation;
 
@@ -35,22 +36,44 @@ public class GnomeController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+		if (floatingBox != null)
+		{
+			if (floatingBox.BoxType == BoxScript.BoxTypes.led)
+			{ 
+				if (Mathf.Abs(floatingBox.GetComponent<Rigidbody2D>().velocity.y) >= ychange || Mathf.Abs(rigid.velocity.y) >= ychange)
+				{
+					floatingBox.GetComponent<Rigidbody2D>().gravityScale = 25;
+					floatingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+					floatingBox.beingHeld = false;
+					floatingBox.gnomeSelection.SetActive(false);
+					floatingBox.gnomeHolding = false;
+
+					BoxCollider2D collider = floatingBox.GetComponent<BoxCollider2D>();
+					collider.offset = new Vector2(0, 0);
+					collider.size = new Vector2(1, 1);
+
+					floatingBox = null;
+					nextPressWillDrop = false;
+				}
+			}
+		}
+
 		//Debug.Log("arrows");
 		if (Input.GetKey(KeyCode.LeftArrow))
 		{
-			if (!facingLeft)
-			{
-				facingLeft = true;
-				rigid.transform.eulerAngles = new Vector2(0, -89);
-			}
+		if (!facingLeft)
+		{
+			facingLeft = true;
+			rigid.transform.eulerAngles = new Vector2(0, -89);
+		}
 
-			rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed;
+		rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed;
 
-            if(holdingABox && touchingBox != floatingBox)
-            {
-                grabClosest(false);
-            }
-			animator.SetFloat("animation", 1);
+        if(holdingABox && touchingBox != floatingBox)
+        {
+            grabClosest(false);
+        }
+		animator.SetFloat("animation", 1);
 		}
 		else if (Input.GetKey(KeyCode.RightArrow))
 		{
@@ -85,7 +108,7 @@ public class GnomeController : MonoBehaviour
 		if (Input.GetKey(KeyCode.UpArrow)) {
             if(holdingABox)
 			{
-				if ((floatingBox.BoxType == BoxScript.BoxTypes.led && floatingBox.transform.position.y - initLevetation < 0.1) || floatingBox.BoxType != BoxScript.BoxTypes.led)
+				if (floatingBox.BoxType != BoxScript.BoxTypes.led)
 				{
 					floatingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
 					floatingBox.GetComponent<Rigidbody2D>().velocity += Vector2.up * Time.deltaTime * levitationSpeed;
@@ -99,7 +122,7 @@ public class GnomeController : MonoBehaviour
         if(Input.GetKey(KeyCode.DownArrow)) {
             if(holdingABox)
 			{
-				if ((floatingBox.BoxType == BoxScript.BoxTypes.led && floatingBox.transform.position.y - initLevetation < 0.2) || floatingBox.BoxType != BoxScript.BoxTypes.led)
+				if (floatingBox.BoxType != BoxScript.BoxTypes.led)
 				{
 					floatingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
 					floatingBox.GetComponent<Rigidbody2D>().velocity += Vector2.down * Time.deltaTime * levitationSpeed;
@@ -165,6 +188,8 @@ public class GnomeController : MonoBehaviour
         {
             touchingBox = null;
         }
+
+
     }
 
     public void grabClosest(bool pressActivate)
@@ -181,7 +206,12 @@ public class GnomeController : MonoBehaviour
             floatingBox.beingHeld = false;
             floatingBox.gnomeSelection.SetActive(false);
 			floatingBox.gnomeHolding = false;
-            floatingBox = null;
+
+			BoxCollider2D collider = floatingBox.GetComponent<BoxCollider2D>();
+			collider.offset = new Vector2(0, 0);
+			collider.size = new Vector2(1, 1);
+
+			floatingBox = null;
             nextPressWillDrop = false;
         }
         if(!holdingABox)
@@ -224,6 +254,11 @@ public class GnomeController : MonoBehaviour
 						floatingBox.gnomeSelection.SetActive(true);
 						initLevetation = floatingBox.transform.position.y;
 						floatingBox.gnomeHolding = true;
+
+						BoxCollider2D collider = floatingBox.GetComponent<BoxCollider2D>();
+						collider.offset = new Vector2(0, -0.05f);
+						collider.size = new Vector2(1, 1.1f);
+						floatingBox.rb.velocity = Vector2.up * 1.1f;
 						//todo: add visual feedback that he needs help
 					}
                 }

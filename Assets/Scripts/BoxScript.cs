@@ -33,8 +33,8 @@ public class BoxScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //this.transform.localPosition = new Vector3(1, 1, 1);
-        //rb.velocity = Vector3.zero;
+		//this.transform.localPosition = new Vector3(1, 1, 1);
+		//rb.velocity = Vector3.zero;
     }
 
     private void LateUpdate()
@@ -50,4 +50,17 @@ public class BoxScript : MonoBehaviour
             rb.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX;
         }
     }
+
+	void OnCollisionExit2D(Collision2D collision)
+	{
+		if (gnomeHolding)
+		{
+			if (collision.gameObject.tag.Equals("Ground"))
+			{
+				Debug.Log("Box Falling");
+				rb.GetComponent<Rigidbody2D>().gravityScale = 25;
+			}
+			
+		}
+	}
 }
