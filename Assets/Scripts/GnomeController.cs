@@ -268,9 +268,10 @@ public class GnomeController : MonoBehaviour
 			BoxCollider2D collider = floatingBox.GetComponent<BoxCollider2D>();
 			collider.offset = new Vector2(0, 0);
 			collider.size = new Vector2(1, 1);
-
+            floatingBox.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 			floatingBox = null;
             nextPressWillDrop = false;
+            
         }
 
         if(!holdingABox)

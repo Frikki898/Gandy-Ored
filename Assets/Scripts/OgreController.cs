@@ -277,6 +277,11 @@ public class OgreController : MonoBehaviour
                     holdingBox.ogreSelection.SetActive(true);
                     fromFloatingBox = Vector3.Distance(this.transform.position, holdingBox.transform.position);
 					holdingBox.ogreHolding = true;
+
+                    if(holdingBox.gnomeHolding)
+                    {
+                        holdingBox.rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
+                    }
                 } 
                 else if(touchingBox.BoxType == BoxScript.BoxTypes.steel)
                 {
