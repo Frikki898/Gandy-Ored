@@ -318,7 +318,7 @@ public class GnomeController : MonoBehaviour
 						BoxCollider2D collider = floatingBox.GetComponent<BoxCollider2D>();
 						collider.offset = new Vector2(0, -0.05f);
 						collider.size = new Vector2(1, 1.1f);
-						floatingBox.transform.position = new Vector3(floatingBox.transform.position.x, floatingBox.transform.position.y + 0.1f, floatingBox.transform.position.z);
+						//floatingBox.transform.position = new Vector3(floatingBox.transform.position.x, floatingBox.transform.position.y + 0.1f, floatingBox.transform.position.z);
 						//todo: add visual feedback that he needs help
 						if (floatingBox.ogreHolding)
 						{

@@ -40,8 +40,9 @@ public class BoxScript : MonoBehaviour
         {
             lastYPos = this.transform.position.y;
         }
-        if(ogreHolding && gnomeHolding)
+        if(ogreHolding && gnomeHolding && BoxType != BoxTypes.led)
         {
+
             this.transform.position = new Vector3(this.transform.position.x, lastYPos, this.transform.position.z);
         }
         //this.transform.localPosition = new Vector3(1, 1, 1);

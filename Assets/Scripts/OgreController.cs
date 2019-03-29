@@ -54,6 +54,7 @@ public class OgreController : MonoBehaviour
         {
             if(Vector3.Distance(holdingBox.transform.position, this.transform.position) > fromFloatingBox + 0.2f)
             {
+				Debug.Log("in Break");
                 grabClosest();
             }
         }
@@ -79,7 +80,7 @@ public class OgreController : MonoBehaviour
             {
                 if(gSide == grabSide.left)
                 {
-                    if(holdingBox.gnomeHolding)
+                    if(holdingBox.gnomeHolding && holdingBox.BoxType != BoxScript.BoxTypes.led)
                     {
                         holdingBox.rb.velocity += Vector2.left * Time.deltaTime * movementSpeed;
                     }
@@ -90,7 +91,7 @@ public class OgreController : MonoBehaviour
                 }
                 else
                 {
-                    if (holdingBox.gnomeHolding)
+                    if (holdingBox.gnomeHolding && holdingBox.BoxType != BoxScript.BoxTypes.led)
                     {
                         rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed;
                     }
@@ -131,7 +132,7 @@ public class OgreController : MonoBehaviour
             {
                 if (gSide == grabSide.right)
                 {
-                    if (holdingBox.gnomeHolding)
+                    if (holdingBox.gnomeHolding && holdingBox.BoxType != BoxScript.BoxTypes.led)
                     {
                         holdingBox.rb.velocity += Vector2.right * Time.deltaTime * movementSpeed;
                     }
@@ -142,7 +143,7 @@ public class OgreController : MonoBehaviour
                 }
                 else
                 {
-                    if (holdingBox.gnomeHolding)
+                    if (holdingBox.gnomeHolding && holdingBox.BoxType != BoxScript.BoxTypes.led)
                     {
                         rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed;
                     }
@@ -303,6 +304,7 @@ public class OgreController : MonoBehaviour
 					holdingBox.beingHeld = true;
 					holdingBox.ogreSelection.SetActive(true);
 					holdingBox.ogreHolding = true;
+					fromFloatingBox = Vector3.Distance(this.transform.position, holdingBox.transform.position);
 
 					if (touchingBox.gnomeHolding)
 					{
