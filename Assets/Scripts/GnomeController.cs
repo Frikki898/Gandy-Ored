@@ -222,6 +222,10 @@ public class GnomeController : MonoBehaviour
             onLadder = true;
             rigid.gravityScale = 0;
         }
+        else if(collision.gameObject.tag == "Box")
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     void OnTriggerExit2D(Collider2D collision)

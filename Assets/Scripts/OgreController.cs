@@ -211,6 +211,14 @@ public class OgreController : MonoBehaviour
 		
 	}
 
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Box")
+        {
+            Destroy(this.gameObject);
+        }
+    }
+
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.GetComponent<BoxScript>() != null)
