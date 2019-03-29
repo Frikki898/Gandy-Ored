@@ -24,8 +24,6 @@ public class GnomeController : MonoBehaviour
         return rigid;
     }
 
-	private float initLevetation;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -175,7 +173,7 @@ public class GnomeController : MonoBehaviour
         if (floatingBox) {
             if(!Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.UpArrow)) {
 
-				if (floatingBox.ogreHolding == false)
+				if (floatingBox.ogreHolding == false && floatingBox.BoxType != BoxScript.BoxTypes.led)
 				{
 					floatingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
 				}
@@ -255,7 +253,11 @@ public class GnomeController : MonoBehaviour
 			holdingABox = false;
 		}
 
-        if(nextPressWillDrop)
+		if (nextPressWillDrop && floatingBox == null)
+		{
+			nextPressWillDrop = false;
+		}
+        else if(nextPressWillDrop)
         {
             floatingBox.GetComponent<Rigidbody2D>().gravityScale = 25;
             floatingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
@@ -270,6 +272,7 @@ public class GnomeController : MonoBehaviour
 			floatingBox = null;
             nextPressWillDrop = false;
         }
+
         if(!holdingABox)
         {
             if(touchingBox != null)
@@ -308,16 +311,20 @@ public class GnomeController : MonoBehaviour
 						floatingBox = touchingBox;
 						floatingBox.beingHeld = true;
 						holdingABox = true;
-						touchingBox.GetComponent<Rigidbody2D>().gravityScale = 0;
+						floatingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
 						floatingBox.gnomeSelection.SetActive(true);
-						initLevetation = floatingBox.transform.position.y;
 						floatingBox.gnomeHolding = true;
 
 						BoxCollider2D collider = floatingBox.GetComponent<BoxCollider2D>();
 						collider.offset = new Vector2(0, -0.05f);
 						collider.size = new Vector2(1, 1.1f);
-						floatingBox.rb.velocity = Vector2.up * 1.1f;
+						floatingBox.transform.position = new Vector3(floatingBox.transform.position.x, floatingBox.transform.position.y + 0.1f, floatingBox.transform.position.z);
 						//todo: add visual feedback that he needs help
+						if (floatingBox.ogreHolding)
+						{
+							floatingBox.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+							floatingBox.rb.mass = 1;
+						}
 					}
                 }
             }

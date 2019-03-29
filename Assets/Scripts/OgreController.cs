@@ -296,18 +296,19 @@ public class OgreController : MonoBehaviour
                 else if(touchingBox.BoxType == BoxScript.BoxTypes.led)
                 {
                     Debug.Log("Needs help to move this");
+					movementSpeed = carrySpeed;
+
+					holdingBox = touchingBox;
+					holdingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+					holdingBox.beingHeld = true;
+					holdingBox.ogreSelection.SetActive(true);
+					holdingBox.ogreHolding = true;
 
 					if (touchingBox.gnomeHolding)
 					{
-						movementSpeed = carrySpeed;
-
-						holdingBox = touchingBox;
-						holdingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
-						holdingBox.beingHeld = true;
 						holdingBox.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 						holdingBox.rb.mass = 1;
-						holdingBox.ogreSelection.SetActive(true);
-						holdingBox.ogreHolding = true;
+						
 					}
                     //todo: add visual feedback that he needs help
                 }
@@ -315,7 +316,8 @@ public class OgreController : MonoBehaviour
         }
         else
         {
-            movementSpeed = runSpeed;
+			Debug.Log("releasing");
+			movementSpeed = runSpeed;
             holdingBox.beingHeld = false;
             holdingBox.rb.mass = 10;
             holdingBox.ogreSelection.SetActive(false);

@@ -52,17 +52,4 @@ public class BoxScript : MonoBehaviour
             rb.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX;
         }
     }
-
-	void OnCollisionExit2D(Collision2D collision)
-	{
-		if (gnomeHolding)
-		{
-			if (collision.gameObject.tag.Equals("Ground"))
-			{
-				Debug.Log("Box Falling");
-				rb.GetComponent<Rigidbody2D>().gravityScale = 25;
-			}
-			
-		}
-	}
 }
