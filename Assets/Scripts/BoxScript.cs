@@ -25,6 +25,7 @@ public class BoxScript : MonoBehaviour
 	public bool gnomeHolding = false;
 
     public GnomeController gnomeOnTop;
+    private float lastYPos;
 
     // Start is called before the first frame update
     void Start()
@@ -35,8 +36,16 @@ public class BoxScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		//this.transform.localPosition = new Vector3(1, 1, 1);
-		//rb.velocity = Vector3.zero;
+        if(rb.bodyType == RigidbodyType2D.Static)
+        {
+            lastYPos = this.transform.position.y;
+        }
+        if(ogreHolding && gnomeHolding)
+        {
+            this.transform.position = new Vector3(this.transform.position.x, lastYPos, this.transform.position.z);
+        }
+        //this.transform.localPosition = new Vector3(1, 1, 1);
+        //rb.velocity = Vector3.zero;
     }
 
     private void LateUpdate()

@@ -66,7 +66,7 @@ public class GnomeController : MonoBehaviour
 		//Debug.Log("arrows");
 		if (Input.GetKey(KeyCode.LeftArrow))
         isGrounded = false;
-        if (rigid.velocity.y == 0)
+        if (rigid.velocity.y == 0 || touchingBox != null)
         {
             isGrounded = true;
         }
@@ -81,11 +81,11 @@ public class GnomeController : MonoBehaviour
 		}
 
 
-            if (rigid.gravityScale == 0)
+            /*if (rigid.gravityScale == 0)
             {
                 rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed * 0.4f;
             }
-            else if(isGrounded)
+            else */if(isGrounded)
             {
                 rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed;
             }
@@ -109,11 +109,11 @@ public class GnomeController : MonoBehaviour
 				rigid.transform.eulerAngles = new Vector2(0, 89);
 			}
 
-            if (rigid.gravityScale == 0)
+            /*if (rigid.gravityScale == 0)
             {
                 rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed * 0.4f;
             }
-            else if (isGrounded)
+            else */if (isGrounded)
             {
                 rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed;
             }
@@ -206,7 +206,7 @@ public class GnomeController : MonoBehaviour
             }
             else
             {
-                rigid.gravityScale = 0;
+                //rigid.gravityScale = 0;
                 //Debug.Log("on top of box");
             }
 
