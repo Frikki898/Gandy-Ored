@@ -301,7 +301,7 @@ public class OgreController : MonoBehaviour
 
 					holdingBox = touchingBox;
 					holdingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
-					holdingBox.beingHeld = true;
+					//holdingBox.beingHeld = true;
 					holdingBox.ogreSelection.SetActive(true);
 					holdingBox.ogreHolding = true;
 					fromFloatingBox = Vector3.Distance(this.transform.position, holdingBox.transform.position);
