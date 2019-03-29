@@ -28,9 +28,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3271181844680107320}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 15.27, y: -6.66, z: 0.51}
-  m_LocalScale: {x: 3, y: 3, z: 1}
+  m_LocalScale: {x: 14.152885, y: 3, z: 1}
   m_Children:
   - {fileID: 801826947719703068}
   - {fileID: 8025899944278147359}
@@ -125,6 +125,8 @@ MonoBehaviour:
   beingHeld: 0
   gnomeSelection: {fileID: 8228776904703987892}
   ogreSelection: {fileID: 4665626775887658156}
+  ogreHolding: 0
+  gnomeHolding: 0
   gnomeOnTop: {fileID: 0}
 --- !u!50 &3271181844680107321
 Rigidbody2D:
