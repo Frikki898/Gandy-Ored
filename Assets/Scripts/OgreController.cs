@@ -54,6 +54,7 @@ public class OgreController : MonoBehaviour
         {
             if(Vector3.Distance(holdingBox.transform.position, this.transform.position) > fromFloatingBox + 0.2f)
             {
+				Debug.Log("in Break");
                 grabClosest();
             }
         }
@@ -79,7 +80,7 @@ public class OgreController : MonoBehaviour
             {
                 if(gSide == grabSide.left)
                 {
-                    if(holdingBox.gnomeHolding)
+                    if(holdingBox.gnomeHolding && holdingBox.BoxType != BoxScript.BoxTypes.led)
                     {
                         holdingBox.rb.velocity += Vector2.left * Time.deltaTime * movementSpeed;
                     }
@@ -90,7 +91,7 @@ public class OgreController : MonoBehaviour
                 }
                 else
                 {
-                    if (holdingBox.gnomeHolding)
+                    if (holdingBox.gnomeHolding && holdingBox.BoxType != BoxScript.BoxTypes.led)
                     {
                         rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed;
                     }
@@ -131,7 +132,7 @@ public class OgreController : MonoBehaviour
             {
                 if (gSide == grabSide.right)
                 {
-                    if (holdingBox.gnomeHolding)
+                    if (holdingBox.gnomeHolding && holdingBox.BoxType != BoxScript.BoxTypes.led)
                     {
                         holdingBox.rb.velocity += Vector2.right * Time.deltaTime * movementSpeed;
                     }
@@ -142,7 +143,7 @@ public class OgreController : MonoBehaviour
                 }
                 else
                 {
-                    if (holdingBox.gnomeHolding)
+                    if (holdingBox.gnomeHolding && holdingBox.BoxType != BoxScript.BoxTypes.led)
                     {
                         rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed;
                     }
@@ -210,6 +211,14 @@ public class OgreController : MonoBehaviour
 		
 	}
 
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Box")
+        {
+            Destroy(this.gameObject);
+        }
+    }
+
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.GetComponent<BoxScript>() != null)
@@ -276,6 +285,11 @@ public class OgreController : MonoBehaviour
                     holdingBox.ogreSelection.SetActive(true);
                     fromFloatingBox = Vector3.Distance(this.transform.position, holdingBox.transform.position);
 					holdingBox.ogreHolding = true;
+
+                    if(holdingBox.gnomeHolding)
+                    {
+                        holdingBox.rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
+                    }
                 } 
                 else if(touchingBox.BoxType == BoxScript.BoxTypes.steel)
                 {
@@ -296,18 +310,20 @@ public class OgreController : MonoBehaviour
                 else if(touchingBox.BoxType == BoxScript.BoxTypes.led)
                 {
                     Debug.Log("Needs help to move this");
+					movementSpeed = carrySpeed;
+
+					holdingBox = touchingBox;
+					holdingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+					//holdingBox.beingHeld = true;
+					holdingBox.ogreSelection.SetActive(true);
+					holdingBox.ogreHolding = true;
+					fromFloatingBox = Vector3.Distance(this.transform.position, holdingBox.transform.position);
 
 					if (touchingBox.gnomeHolding)
 					{
-						movementSpeed = carrySpeed;
-
-						holdingBox = touchingBox;
-						holdingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
-						holdingBox.beingHeld = true;
 						holdingBox.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 						holdingBox.rb.mass = 1;
-						holdingBox.ogreSelection.SetActive(true);
-						holdingBox.ogreHolding = true;
+						
 					}
                     //todo: add visual feedback that he needs help
                 }
@@ -315,7 +331,8 @@ public class OgreController : MonoBehaviour
         }
         else
         {
-            movementSpeed = runSpeed;
+			Debug.Log("releasing");
+			movementSpeed = runSpeed;
             holdingBox.beingHeld = false;
             holdingBox.rb.mass = 10;
             holdingBox.ogreSelection.SetActive(false);

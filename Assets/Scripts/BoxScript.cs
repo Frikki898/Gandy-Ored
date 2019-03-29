@@ -36,20 +36,22 @@ public class BoxScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(rb.bodyType == RigidbodyType2D.Static)
-        {
-            lastYPos = this.transform.position.y;
-        }
-        if(ogreHolding && gnomeHolding)
-        {
-            this.transform.position = new Vector3(this.transform.position.x, lastYPos, this.transform.position.z);
-        }
+        
         //this.transform.localPosition = new Vector3(1, 1, 1);
         //rb.velocity = Vector3.zero;
     }
 
     private void LateUpdate()
     {
+        if (rb.bodyType == RigidbodyType2D.Static)
+        {
+            lastYPos = this.transform.position.y;
+        }
+        if (ogreHolding && gnomeHolding && BoxType != BoxTypes.led)
+        {
+
+            this.transform.position = new Vector3(this.transform.position.x, lastYPos, this.transform.position.z);
+        }
         //rb.velocity = Vector3.zero;
     }
 
