@@ -64,7 +64,7 @@ public class GnomeController : MonoBehaviour
 		}
 
 		//Debug.Log("arrows");
-		if (Input.GetKey(KeyCode.LeftArrow))
+		//if (Input.GetKey(KeyCode.LeftArrow))
         isGrounded = false;
         if (rigid.velocity.y == 0 || touchingBox != null)
         {
@@ -85,7 +85,7 @@ public class GnomeController : MonoBehaviour
             {
                 rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed * 0.4f;
             }
-            else */if(isGrounded)
+            else */if(isGrounded && !onLadder)
             {
                 rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed;
             }
@@ -113,7 +113,7 @@ public class GnomeController : MonoBehaviour
             {
                 rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed * 0.4f;
             }
-            else */if (isGrounded)
+            else */if (isGrounded && !onLadder)
             {
                 rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed;
             }
