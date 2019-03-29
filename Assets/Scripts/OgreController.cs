@@ -17,6 +17,16 @@ public class OgreController : MonoBehaviour
     private float ychange = 1;
 	private float animSpeed = 1;
 	private bool facingLeft = false;
+    private float fromFloatingBox;
+
+    private enum grabSide
+    {
+        left,
+        right,
+        none
+    };
+
+    private grabSide gSide = grabSide.none;
 
 	// Start is called before the first frame update
 	void Start()
@@ -40,6 +50,14 @@ public class OgreController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(holdingBox)
+        {
+            if(Vector3.Distance(holdingBox.transform.position, this.transform.position) > fromFloatingBox + 0.2f)
+            {
+                grabClosest();
+            }
+        }
+
         if(holdingBox != null)
         {
             if (Mathf.Abs(holdingBox.GetComponent<Rigidbody2D>().velocity.y) >= ychange || Mathf.Abs(rigid.velocity.y) >= ychange)
@@ -53,69 +71,112 @@ public class OgreController : MonoBehaviour
 				holdingBox = null;
             }
         }
+        //Debug.Log(gSide);
 
-		if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.A))
 		{
-			if (!facingLeft)
-			{
-				if (holdingBox != null)
-				{
-					holdingBox.rb.velocity += Vector2.left * Time.deltaTime * movementSpeed;
-					animSpeed = -0.6f;
-				}
-				else
-				{
-					facingLeft = true;
-					rigid.transform.eulerAngles = new Vector2(0, -80);
-					animSpeed = 1f;
-				}
-			}
-			else
-			{
-				if (holdingBox != null)
-				{
-					holdingBox.rb.velocity += Vector2.left * Time.deltaTime * movementSpeed;
-					animSpeed = 0.6f;
-				}
-				else
-				{
-					animSpeed = 1f;
-				}
-			}
-
-			rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed;
-
+            if(holdingBox)
+            {
+                if(gSide == grabSide.left)
+                {
+                    if(holdingBox.gnomeHolding)
+                    {
+                        holdingBox.rb.velocity += Vector2.left * Time.deltaTime * movementSpeed;
+                    }
+                    else
+                    {
+                        holdingBox.rb.velocity += Vector2.left * Time.deltaTime * movementSpeed*2;
+                    }
+                }
+                else
+                {
+                    if (holdingBox.gnomeHolding)
+                    {
+                        rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed;
+                    }
+                    else
+                    {
+                        rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed * 2;
+                    }
+                }
+                if(!facingLeft)
+                {
+                    animSpeed = -0.6f;
+                }
+                else
+                {
+                    facingLeft = true;
+                    rigid.transform.eulerAngles = new Vector2(0, -80);
+                    animSpeed = 0.6f;
+                }
+            }
+            else
+            {
+                if(isGrounded)
+                {
+                    rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed;
+                }
+                else
+                {
+                    rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed * 0.5f;
+                }
+                facingLeft = true;
+                rigid.transform.eulerAngles = new Vector2(0, -80);
+                animSpeed = 1f;
+            }
 		}
 		else if (Input.GetKey(KeyCode.D))
 		{
-			if (facingLeft)
-			{
-				if (holdingBox != null)
-				{
-					holdingBox.rb.velocity += Vector2.right * Time.deltaTime * movementSpeed;
-					animSpeed = -0.6f;
-				}
-				else
-				{
-					facingLeft = false;
-					rigid.transform.eulerAngles = new Vector2(0, 100);
-					animSpeed = 1f;
-				}
-			}
-			else
-			{
-				if (holdingBox != null)
-				{
-					holdingBox.rb.velocity += Vector2.right * Time.deltaTime * movementSpeed;
-					animSpeed = 0.6f;
-				}
-				else
-				{
-					animSpeed = 1f;
-				}
-			}
-			rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed;
-		}
+            if (holdingBox)
+            {
+                if (gSide == grabSide.right)
+                {
+                    if (holdingBox.gnomeHolding)
+                    {
+                        holdingBox.rb.velocity += Vector2.right * Time.deltaTime * movementSpeed;
+                    }
+                    else
+                    {
+                        holdingBox.rb.velocity += Vector2.right * Time.deltaTime * movementSpeed * 2;
+                    }
+                }
+                else
+                {
+                    if (holdingBox.gnomeHolding)
+                    {
+                        rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed;
+                    }
+                    else
+                    {
+                        rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed * 2;
+                    }
+                }
+                if (!facingLeft)
+                {
+                    animSpeed = 0.6f;
+                }
+                else
+                {
+                    facingLeft = true;
+                    rigid.transform.eulerAngles = new Vector2(0, -80);
+                    animSpeed = -0.6f;
+                }
+            }
+            else
+            {
+                if (isGrounded)
+                {
+                    rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed;
+                }
+                else
+                {
+                    rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed * 0.5f;
+                }
+                facingLeft = false;
+                rigid.transform.eulerAngles = new Vector2(0, 100);
+                animSpeed = 1f;
+            }
+        }
 		else
 		{
 			if (isGrounded)
@@ -161,11 +222,19 @@ public class OgreController : MonoBehaviour
             if (contactPoint.x > center.x + collision.gameObject.transform.localScale.x / 2)
             {
                 touchingBox = collision.gameObject.GetComponent<BoxScript>();
+                if (holdingBox == null)
+                {
+                    gSide = grabSide.right;
+                }
                 Debug.Log("To the right");
             }
             if (contactPoint.x < center.x - collision.gameObject.transform.localScale.x / 2)
             {
                 touchingBox = collision.gameObject.GetComponent<BoxScript>();
+                if(holdingBox == null)
+                {
+                    gSide = grabSide.left;
+                }
                 Debug.Log("To the left");
             }
         }
@@ -173,18 +242,18 @@ public class OgreController : MonoBehaviour
 
     void OnCollisionExit2D(Collision2D collision)
     {
+        Debug.Log("exiting");
         isGrounded = false;
         BoxScript b = collision.gameObject.GetComponent<BoxScript>();
-        if (b != null)
+        if(b != null)
         {
-            Debug.Log("getting in here");
-            if (b == holdingBox)
+            if (b == holdingBox)    
             {
-                Debug.Log("not getting in here");
-                //releasing the box if i move away form it
-                grabClosest();
+                if (Vector3.Distance(this.transform.position, holdingBox.transform.position) > fromFloatingBox + 1)
+                {
+                    grabClosest();
+                }
             }
-            Debug.Log("stopped touching box");
             touchingBox = null;
         }
     }
@@ -205,6 +274,7 @@ public class OgreController : MonoBehaviour
                     holdingBox.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
                     holdingBox.rb.mass = 1;
                     holdingBox.ogreSelection.SetActive(true);
+                    fromFloatingBox = Vector3.Distance(this.transform.position, holdingBox.transform.position);
 					holdingBox.ogreHolding = true;
                 } 
                 else if(touchingBox.BoxType == BoxScript.BoxTypes.steel)
@@ -216,6 +286,7 @@ public class OgreController : MonoBehaviour
                     holdingBox.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
                     holdingBox.rb.mass = 1;
                     holdingBox.ogreSelection.SetActive(true);
+                    fromFloatingBox = Vector3.Distance(this.transform.position, holdingBox.transform.position);
                 }
                 else if(touchingBox.BoxType == BoxScript.BoxTypes.magic)
                 {
@@ -257,7 +328,7 @@ public class OgreController : MonoBehaviour
     private float lastFrameVelo;
     void OnCollisionStay2D()
     {
-        if (rigid.velocity.y == 0 && lastFrameVelo == 0)
+        if (rigid.velocity.y == 0)
         {
             isGrounded = true;
         }

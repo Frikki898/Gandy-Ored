@@ -15,7 +15,14 @@ public class GnomeController : MonoBehaviour
     private bool nextPressWillDrop = false;
     private bool onLadder = false;
 	private bool facingLeft = false;
+    private bool isGrounded;
 	private float ychange = 1;
+
+
+    public Rigidbody2D getRigid()
+    {
+        return rigid;
+    }
 
 	private float initLevetation;
 
@@ -60,6 +67,14 @@ public class GnomeController : MonoBehaviour
 
 		//Debug.Log("arrows");
 		if (Input.GetKey(KeyCode.LeftArrow))
+        isGrounded = false;
+        if (rigid.velocity.y == 0)
+        {
+            isGrounded = true;
+        }
+
+        //Debug.Log("arrows");
+        if (Input.GetKey(KeyCode.LeftArrow))
 		{
 		if (!facingLeft)
 		{
@@ -67,13 +82,26 @@ public class GnomeController : MonoBehaviour
 			rigid.transform.eulerAngles = new Vector2(0, -89);
 		}
 
-		rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed;
 
-        if(holdingABox && touchingBox != floatingBox)
-        {
-            grabClosest(false);
-        }
-		animator.SetFloat("animation", 1);
+            if (rigid.gravityScale == 0)
+            {
+                rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed * 0.4f;
+            }
+            else if(isGrounded)
+            {
+                rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed;
+            }
+            else
+            {
+                rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed * 0.5f;
+            }
+			
+
+            if(holdingABox && touchingBox != floatingBox)
+            {
+                grabClosest(false);
+            }
+			animator.SetFloat("animation", 1);
 		}
 		else if (Input.GetKey(KeyCode.RightArrow))
 		{
@@ -83,7 +111,18 @@ public class GnomeController : MonoBehaviour
 				rigid.transform.eulerAngles = new Vector2(0, 89);
 			}
 
-			rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed;
+            if (rigid.gravityScale == 0)
+            {
+                rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed * 0.4f;
+            }
+            else if (isGrounded)
+            {
+                rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed;
+            }
+            else
+            {
+                rigid.velocity += Vector2.right * Time.deltaTime * movementSpeed * 0.5f;
+            }
 
             if (holdingABox && touchingBox != floatingBox)
             {
@@ -155,6 +194,24 @@ public class GnomeController : MonoBehaviour
         {
             //Debug.Log("Touching a box");
             touchingBox = collision.gameObject.GetComponent<BoxScript>();
+
+            Vector3 center = collision.collider.bounds.center;
+            Vector3 contactPoint = collision.contacts[0].point;
+
+            if (contactPoint.x > center.x + collision.gameObject.transform.localScale.x / 2)
+            {
+                
+            }
+            else if (contactPoint.x < center.x - collision.gameObject.transform.localScale.x / 2)
+            {
+                
+            }
+            else
+            {
+                rigid.gravityScale = 0;
+                //Debug.Log("on top of box");
+            }
+
         }
     }
 
@@ -186,10 +243,9 @@ public class GnomeController : MonoBehaviour
         BoxScript b = collision.gameObject.GetComponent<BoxScript>();
         if (b != null)
         {
+            rigid.gravityScale = 25;
             touchingBox = null;
         }
-
-
     }
 
     public void grabClosest(bool pressActivate)
@@ -227,6 +283,7 @@ public class GnomeController : MonoBehaviour
                         holdingABox = true;
                         touchingBox.GetComponent<Rigidbody2D>().gravityScale = 0;
                         floatingBox.gnomeSelection.SetActive(true);
+                        floatingBox.gnomeHolding = true;
                         //Debug.Log("grabbed " + touchingBox);
                     }
                     else if (touchingBox.BoxType == BoxScript.BoxTypes.steel)
@@ -241,6 +298,7 @@ public class GnomeController : MonoBehaviour
                         holdingABox = true;
                         touchingBox.GetComponent<Rigidbody2D>().gravityScale = 0;
                         floatingBox.gnomeSelection.SetActive(true);
+                        floatingBox.gnomeHolding = true;
                         //Debug.Log("grabbed " + touchingBox);
                     }
                     else if (touchingBox.BoxType == BoxScript.BoxTypes.led)

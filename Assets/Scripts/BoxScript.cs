@@ -24,6 +24,8 @@ public class BoxScript : MonoBehaviour
 	public bool ogreHolding = false;
 	public bool gnomeHolding = false;
 
+    public GnomeController gnomeOnTop;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -46,7 +48,7 @@ public class BoxScript : MonoBehaviour
     {
         if (!beingHeld)
         {
-            rb.mass = 10;
+            rb.mass = 1000;
             rb.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX;
         }
     }
