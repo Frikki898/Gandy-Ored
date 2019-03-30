@@ -22,7 +22,7 @@ public class LevelExit : MonoBehaviour
 
 	private GameObject ogre = null;
 	private GameObject gnome = null;
-	public GameManager gameManager;
+	private GameManager gameManager;
 
 	public GameObject haltingCollider;
 	public GameObject exitCollider;
@@ -42,9 +42,11 @@ public class LevelExit : MonoBehaviour
 			//haltingCollider = GameObject.Find("haltingCollider");
 			//exitCollider = GameObject.Find("exitCollider");
 			
-			exitCollider.SetActive(true);
-			haltingCollider.SetActive(false);
+		exitCollider.SetActive(true);
+		haltingCollider.SetActive(false);
 		//}
+		gameManager = FindObjectOfType<GameManager>();
+
 	}
 	void OnTriggerEnter2D(Collider2D collision)
 	{
@@ -146,8 +148,10 @@ public class LevelExit : MonoBehaviour
 
 	void setNextLevel()
 	{
-		++gameManager.level;
-		gameManager.initCameraPosition = newCamPosition;
+		gameManager.cameraPosition = newCamPosition;
+		gameManager.ogreResetPositions = GameObject.Find("ogre").transform.position;
+		gameManager.gnomeResetPositions = GameObject.Find("gnome").transform.position;
+
 		//if (usingSystem == 1)
 		//{
 		//	if (selectLevel == 1)

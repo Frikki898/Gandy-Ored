@@ -9,20 +9,30 @@ public class GameManager : MonoBehaviour
 	public KeyCode resetKey;
 	public KeyCode hardResetKey;
 
-	public int level = 0;
+	private int level = 0;
 
-	
-	public Vector3[] gnomeResetPositions = new Vector3[1];
-	public Vector3[] ogreResetPositions = new Vector3[1];
+	[HideInInspector]public Vector3 gnomeResetPositions;
+	[HideInInspector]public Vector3 ogreResetPositions;
+	[HideInInspector]public Vector3 cameraPosition;
 	private BoxScript[] resetableObjects;
-	public Vector3 initCameraPosition;
+
+	private GameObject ogre;
+	private GameObject gnome;
+	private GameObject camera;
 
 	private Vector3[] objectsPosition;
 	// Start is called before the first frame update
 	void Start()
     {
-        resetableObjects = FindObjectsOfType<BoxScript>();
+		ogre = GameObject.Find("ogre");
+		gnome = GameObject.Find("gnome");
+		camera = GameObject.Find("Main Camera");
 
+		ogreResetPositions = ogre.transform.position;
+		gnomeResetPositions = gnome.transform.position;
+		cameraPosition = camera.transform.position;
+
+		resetableObjects = FindObjectsOfType<BoxScript>();
         objectsPosition = new Vector3[resetableObjects.Length];
 
 		int i = 0;
@@ -48,14 +58,12 @@ public class GameManager : MonoBehaviour
 
 	void resetLevel()
 	{
-		GameObject ogre = GameObject.Find("ogre");
-		GameObject gnome = GameObject.Find("gnome");
-		GameObject camera = GameObject.Find("Main Camera");
+		
 
 		
-		gnome.transform.position = gnomeResetPositions[level];
-		ogre.transform.position = ogreResetPositions[level];
-		camera.transform.position = initCameraPosition;
+		gnome.transform.position = gnomeResetPositions;
+		ogre.transform.position = ogreResetPositions;
+		camera.transform.position = cameraPosition;
 
 		GnomeController gc = gnome.GetComponent<GnomeController>();
 		gc.grabClosest(true);
