@@ -18,6 +18,7 @@ public class OgreController : MonoBehaviour
 	private float animSpeed = 1;
 	private bool facingLeft = false;
     private float fromFloatingBox;
+    public GameObject deathAnim;
 
     private enum grabSide
     {
@@ -215,6 +216,8 @@ public class OgreController : MonoBehaviour
     {
         if (collision.gameObject.tag == "Box")
         {
+            GameObject anim = Instantiate(deathAnim);
+            anim.transform.position = this.transform.position + Vector3.up * 2;
             Destroy(this.gameObject);
         }
     }

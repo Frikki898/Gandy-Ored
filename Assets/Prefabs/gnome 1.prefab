@@ -179,7 +179,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 150
   levitationSpeed: 100
-  climbSpeed: 50
+  climbSpeed: 30
+  jumpForce: 20
 --- !u!58 &1171227823
 CircleCollider2D:
   m_ObjectHideFlags: 0

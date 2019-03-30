@@ -7,6 +7,8 @@ public class GnomeController : MonoBehaviour
     public float movementSpeed;
     public float levitationSpeed;
     public float climbSpeed;
+    public float jumpForce;
+
     private Rigidbody2D rigid;
     private BoxScript touchingBox = null;
     private BoxScript floatingBox;
@@ -17,6 +19,8 @@ public class GnomeController : MonoBehaviour
 	private bool facingLeft = false;
     private bool isGrounded;
 	private float ychange = 1;
+    public GameObject deathAnim;
+
 
 
     public Rigidbody2D getRigid()
@@ -47,6 +51,7 @@ public class GnomeController : MonoBehaviour
 			{ 
 				if (Mathf.Abs(floatingBox.GetComponent<Rigidbody2D>().velocity.y) >= ychange || Mathf.Abs(rigid.velocity.y) >= ychange)
 				{
+                    Debug.Log("altering gravity");
 					floatingBox.GetComponent<Rigidbody2D>().gravityScale = 25;
 					floatingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
 					floatingBox.beingHeld = false;
@@ -91,6 +96,7 @@ public class GnomeController : MonoBehaviour
             }
             else
             {
+                Debug.Log("laddermove");
                 rigid.velocity += Vector2.left * Time.deltaTime * movementSpeed * 0.5f;
             }
 			
@@ -153,7 +159,16 @@ public class GnomeController : MonoBehaviour
             }
             else if(onLadder)
             {
+                Debug.Log("ASDF");
                 rigid.velocity += Vector2.up * Time.deltaTime * climbSpeed;
+            }
+            else
+            {
+                if (Input.GetKeyDown(KeyCode.UpArrow))
+                {
+                    isGrounded = false;
+                    rigid.velocity += Vector2.up * jumpForce;
+                }
             }
         }
         if(Input.GetKey(KeyCode.DownArrow)) {
@@ -221,9 +236,12 @@ public class GnomeController : MonoBehaviour
             Debug.Log("onLadder");
             onLadder = true;
             rigid.gravityScale = 0;
+            movementSpeed = 100;
         }
         else if(collision.gameObject.tag == "Box")
         {
+            GameObject anim = Instantiate(deathAnim);
+            anim.transform.position = this.transform.position + Vector3.up * 1;
             Destroy(this.gameObject);
         }
     }
@@ -235,7 +253,9 @@ public class GnomeController : MonoBehaviour
         {
             Debug.Log("onLadder");
             onLadder = false;
+            movementSpeed = 150;
             //rigid.velocity = Vector2.zero;
+            Debug.Log("altering gravity");
             rigid.gravityScale = 25;
         }
     }
@@ -245,7 +265,11 @@ public class GnomeController : MonoBehaviour
         BoxScript b = collision.gameObject.GetComponent<BoxScript>();
         if (b != null)
         {
-            rigid.gravityScale = 25;
+            Debug.Log("altering gravity");
+            if(!onLadder)
+            {
+                rigid.gravityScale = 25;
+            }
             touchingBox = null;
         }
     }
@@ -263,6 +287,7 @@ public class GnomeController : MonoBehaviour
 		}
         else if(nextPressWillDrop)
         {
+            Debug.Log("altering gravity");
             floatingBox.GetComponent<Rigidbody2D>().gravityScale = 25;
             floatingBox.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
             floatingBox.beingHeld = false;
