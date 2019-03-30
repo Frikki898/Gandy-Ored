@@ -346,6 +346,7 @@ public class GnomeController : MonoBehaviour
 						floatingBox.gnomeHolding = true;
 
 						BoxCollider2D collider = floatingBox.GetComponent<BoxCollider2D>();
+
 						collider.offset = new Vector2(0, -0.05f);
 						collider.size = new Vector2(1, 1.1f);
 						//floatingBox.transform.position = new Vector3(floatingBox.transform.position.x, floatingBox.transform.position.y + 0.1f, floatingBox.transform.position.z);
