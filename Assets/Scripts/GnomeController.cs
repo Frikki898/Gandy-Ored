@@ -14,7 +14,7 @@ public class GnomeController : MonoBehaviour
     private BoxScript floatingBox;
 	private Animator animator = null;
 	private bool holdingABox = false;
-    private bool nextPressWillDrop = false;
+	private bool nextPressWillDrop = false;
     private bool onLadder = false;
 	private bool facingLeft = false;
     private bool isGrounded;

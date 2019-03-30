@@ -1,19 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class LevelExit : MonoBehaviour
 {
-	public int selectLevel;
 	public bool canExit = true;
 	public float transactionSpeed;
-	public float usingSystem = 1;
+	//public float usingSystem = 1;
 	public float newXpos = 0;
 
-	public GameObject level1;
-	public GameObject level2;
-	public GameObject level3;
+	//public GameObject level1;
+	//public GameObject level2;
+	//public GameObject level3;
 
 	public GameObject cam;
 
@@ -24,26 +22,29 @@ public class LevelExit : MonoBehaviour
 
 	private GameObject ogre = null;
 	private GameObject gnome = null;
+	public GameManager gameManager;
 
 	public GameObject haltingCollider;
 	public GameObject exitCollider;
 
+	private Vector3 newCamPosition;
+
 	void Start()
 	{
-		if(usingSystem == 1)
-		{
-			level1.SetActive(true);
-			level2.SetActive(false);
-			level3.SetActive(false);
-		}
-		if (usingSystem == 2)
-		{
+		//if(usingSystem == 1)
+		//{
+		//	level1.SetActive(true);
+		//	level2.SetActive(false);
+		//	level3.SetActive(false);
+		//}
+		//if (usingSystem == 2)
+		//{
 			//haltingCollider = GameObject.Find("haltingCollider");
 			//exitCollider = GameObject.Find("exitCollider");
 			
 			exitCollider.SetActive(true);
 			haltingCollider.SetActive(false);
-		}
+		//}
 	}
 	void OnTriggerEnter2D(Collider2D collision)
 	{
@@ -67,7 +68,6 @@ public class LevelExit : MonoBehaviour
 			{
 				Debug.Log("We can switch scene");
 				exiting = true;
-				setNextLevel();
 			}
 		}
 	}
@@ -75,57 +75,59 @@ public class LevelExit : MonoBehaviour
 	void Update()
 	{
 
-		if (Input.GetKey(KeyCode.R))
+		//if (Input.GetKey(KeyCode.R))
+		//{
+		//	Scene scene = SceneManager.GetActiveScene();
+		//	SceneManager.LoadScene(scene.name);
+		//}
+		//if (usingSystem == 1)
+		//{
+		//	if (Input.GetKey(KeyCode.Alpha1))
+		//	{
+		//		level1.SetActive(true);
+		//		level2.SetActive(false);
+		//		level3.SetActive(false);
+		//	}
+
+		//	if (Input.GetKey(KeyCode.Alpha2))
+		//	{
+		//		level1.SetActive(false);
+		//		level2.SetActive(true);
+		//		level3.SetActive(false);
+		//	}
+
+		//	if (Input.GetKey(KeyCode.Alpha3))
+		//	{
+		//		level1.SetActive(false);
+		//		level2.SetActive(false);
+		//		level3.SetActive(true);
+		//	}
+		//}
+
+		//else if (usingSystem == 2)
+		//{
+		if (exiting)
 		{
-			Scene scene = SceneManager.GetActiveScene();
-			SceneManager.LoadScene(scene.name);
-		}
-		if (usingSystem == 1)
-		{
-			if (Input.GetKey(KeyCode.Alpha1))
+			haltingCollider.SetActive(true);
+			exitCollider.SetActive(false);
+
+			newCamPosition = cam.transform.position;
+			newCamPosition.x = newXpos;
+
+			if (canMoveCamera)
+				cam.transform.position = Vector3.Lerp(cam.transform.position, newCamPosition, transactionSpeed * Time.deltaTime);
+
+			if (newCamPosition.x - cam.transform.position.x < 0.08)
 			{
-				level1.SetActive(true);
-				level2.SetActive(false);
-				level3.SetActive(false);
-			}
-
-			if (Input.GetKey(KeyCode.Alpha2))
-			{
-				level1.SetActive(false);
-				level2.SetActive(true);
-				level3.SetActive(false);
-			}
-
-			if (Input.GetKey(KeyCode.Alpha3))
-			{
-				level1.SetActive(false);
-				level2.SetActive(false);
-				level3.SetActive(true);
-			}
-		}
-
-		else if (usingSystem == 2)
-		{
-			if (exiting)
-			{
-				haltingCollider.SetActive(true);
-				exitCollider.SetActive(false);
-
-				Vector3 newPosition = cam.transform.position;
-				newPosition.x = newXpos;
-
 				if(canMoveCamera)
-					cam.transform.position = Vector3.Lerp(cam.transform.position, newPosition, transactionSpeed * Time.deltaTime);
+					setNextLevel();
 
-				if (newPosition.x - cam.transform.position.x < 0.08)
-				{
-					canMoveCamera = false;
-					//Debug.Log("shutting down");
-					//GetComponent<LevelExit>().enabled = false;
-				}
-				
+				canMoveCamera = false;
+				//Debug.Log("shutting down");
+				//GetComponent<LevelExit>().enabled = false;
 			}
 		}
+		//}
 	}
 
 	void OnTriggerExit2D(Collider2D collision)
@@ -144,23 +146,25 @@ public class LevelExit : MonoBehaviour
 
 	void setNextLevel()
 	{
-		if (usingSystem == 1)
-		{
-			if (selectLevel == 1)
-			{
-				level1.SetActive(false);
-				level2.SetActive(true);
-				level3.SetActive(false);
+		++gameManager.level;
+		gameManager.initCameraPosition = newCamPosition;
+		//if (usingSystem == 1)
+		//{
+		//	if (selectLevel == 1)
+		//	{
+		//		level1.SetActive(false);
+		//		level2.SetActive(true);
+		//		level3.SetActive(false);
 
-		}
-		else if (selectLevel == 2)
-		{
-			level1.SetActive(false);
-			level2.SetActive(false);
-			level3.SetActive(true);
+		//}
+		//else if (selectLevel == 2)
+		//{
+		//	level1.SetActive(false);
+		//	level2.SetActive(false);
+		//	level3.SetActive(true);
 
-			}
-		}
-		
+		//	}
+		//}
+
 	}
 }
