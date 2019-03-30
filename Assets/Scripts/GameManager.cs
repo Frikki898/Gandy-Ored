@@ -14,17 +14,19 @@ public class GameManager : MonoBehaviour
 	
 	public Vector3[] gnomeResetPositions = new Vector3[1];
 	public Vector3[] ogreResetPositions = new Vector3[1];
-	public GameObject[] resetableObjects;
+	private BoxScript[] resetableObjects;
 	public Vector3 initCameraPosition;
 
 	private Vector3[] objectsPosition;
 	// Start is called before the first frame update
 	void Start()
     {
-		objectsPosition = new Vector3[resetableObjects.Length];
+        resetableObjects = FindObjectsOfType<BoxScript>();
+
+        objectsPosition = new Vector3[resetableObjects.Length];
 
 		int i = 0;
-		foreach (GameObject obj in resetableObjects)
+		foreach (BoxScript obj in resetableObjects)
 		{
 			objectsPosition[i] = obj.transform.position;
 			i++;
@@ -60,8 +62,10 @@ public class GameManager : MonoBehaviour
 		OgreController oc = ogre.GetComponent<OgreController>();
 		oc.grabClosest();
 
+        Debug.Log(resetableObjects.Length);
+
 		int i = 0;
-		foreach (GameObject obj in resetableObjects)
+		foreach (BoxScript obj in resetableObjects)
 		{
 			obj.transform.position = objectsPosition[i];
 			i++;
