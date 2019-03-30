@@ -42,7 +42,7 @@ PrefabInstance:
     - target: {fileID: 4523884601438003077, guid: 20f9a42274cbd5e4984ffbeb06cc3a60,
         type: 3}
       propertyPath: m_Name
-      value: ogre 1
+      value: ogre
       objectReference: {fileID: 0}
     - target: {fileID: 4523884601438225317, guid: 20f9a42274cbd5e4984ffbeb06cc3a60,
         type: 3}
@@ -128,7 +128,7 @@ PrefabInstance:
     - target: {fileID: 6233018859195777317, guid: 4aac43d07826202468c6bb6009623ff8,
         type: 3}
       propertyPath: m_Name
-      value: gnome 1
+      value: gnome
       objectReference: {fileID: 0}
     - target: {fileID: 6233018859195686149, guid: 4aac43d07826202468c6bb6009623ff8,
         type: 3}

@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1784001391063183994
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 8883527928785369676, guid: 75fca3ec92a29674c825677cbdeaac9c,
+    type: 3}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1784001391063183988}
+  - component: {fileID: 1784001391063183995}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1784001391063183988
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 8883527928785369666, guid: 75fca3ec92a29674c825677cbdeaac9c,
+    type: 3}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1784001391063183994}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -28.79801, y: 1.9756159, z: -5.9054804}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1784001391063183995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 8883527928785369677, guid: 75fca3ec92a29674c825677cbdeaac9c,
+    type: 3}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1784001391063183994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d4bca4c2b9a97b43a65baebedda2ef9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resetKey: 117
+  hardResetKey: 0
+  level: 1
+  gnomeResetPositions:
+  - {x: -41.73, y: -7.85, z: 0}
+  - {x: 3.44, y: -7.85, z: 0}
+  ogreResetPositions:
+  - {x: -46.11, y: -6.83, z: 1.5}
+  - {x: 3.44, y: 2.68, z: 1.5}
+  resetableObjects:
+  - {fileID: 0}
+  - {fileID: 0}
+  cameraPosition: {x: 26.27, y: -0.25000012, z: -10}
