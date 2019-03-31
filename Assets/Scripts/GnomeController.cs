@@ -36,6 +36,8 @@ public class GnomeController : MonoBehaviour
         ignoreCollision();
         rigid = this.GetComponent<Rigidbody2D>();
 		animator = GetComponent<Animator>();
+        rigid = this.GetComponent<Rigidbody2D>();
+		animator = GetComponent<Animator>();
 	}
 
     public void ignoreCollision()
@@ -47,17 +49,10 @@ public class GnomeController : MonoBehaviour
                 Physics2D.IgnoreCollision(col1, col2);
             }
         }
-<<<<<<< HEAD
     }
-=======
-        rigid = this.GetComponent<Rigidbody2D>();
-		animator = GetComponent<Animator>();
-	}
-    
->>>>>>> 925678ad022349362b88a3f1ec4983d2bab2c4d1
 
-    // Update is called once per frame
-    void Update()
+// Update is called once per frame
+void Update()
     {
 		if (floatingBox != null)
 		{
