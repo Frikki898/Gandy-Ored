@@ -202,6 +202,7 @@ public class GnomeController : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
+        Debug.Log(collision.gameObject.name);
         BoxScript b = collision.gameObject.GetComponent<BoxScript>();
         if (b != null)
         {
@@ -276,6 +277,15 @@ public class GnomeController : MonoBehaviour
 
     public void grabClosest(bool pressActivate)
     {
+        if (touchingBox)
+        {
+            Debug.Log(touchingBox.name);
+        }
+        else
+        {
+            Debug.Log("null");
+        }
+
 		if (pressActivate && holdingABox) {
 			nextPressWillDrop = true;
 			holdingABox = false;
