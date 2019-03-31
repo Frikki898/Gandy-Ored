@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
 	public KeyCode hardResetKey;
     public GameObject Game;
     public GameObject UI;
+    public GameObject endScreen;
 
 	private int level = 0;
 
@@ -69,12 +70,14 @@ public class GameManager : MonoBehaviour
     void openMenu()
     {
         Game.SetActive(false);
+        endScreen.SetActive(false);
         UI.SetActive(true);
     }
 
     public void closeMenu()
     {
         Game.SetActive(true);
+        endScreen.SetActive(false);
         UI.SetActive(false);
     }
 
@@ -93,10 +96,10 @@ public class GameManager : MonoBehaviour
 		gc.nullTouchingBox();
         gc.gameObject.SetActive(true);
 		gc.grabClosest(true);
-        gc.ignoreCollision();
 		OgreController oc = ogre.GetComponent<OgreController>();
         oc.gameObject.SetActive(true);
         oc.grabClosest();
+        gc.ignoreCollision();
         oc.ignoreCollision();
 
         Debug.Log(resetableObjects.Length);
