@@ -209,7 +209,7 @@ void Update()
         }
 	}
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionStay2D(Collision2D collision)
     {
         Debug.Log(collision.gameObject.name);
         BoxScript b = collision.gameObject.GetComponent<BoxScript>();
@@ -321,11 +321,12 @@ void Update()
 			collider.offset = new Vector2(0, 0);
 			collider.size = new Vector2(1, 1);
             floatingBox.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-			floatingBox = null;
-            nextPressWillDrop = false;
-            if(touchingBox != null) {
+            if(touchingBox != null && touchingBox == floatingBox) {
                 touchingBox = null;
             }
+			floatingBox = null;
+            nextPressWillDrop = false;
+            
         }
 
         if(!holdingABox)
