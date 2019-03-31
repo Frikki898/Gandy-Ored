@@ -9,7 +9,8 @@ public class TextBubble : MonoBehaviour
 	{
 		help,
 		noStr,
-		noMag
+		noMag,
+		reset
 	}
 	public enum setPlayer
 	{
@@ -22,6 +23,7 @@ public class TextBubble : MonoBehaviour
 	private string help = "Hmm, maybe if I could get help with that!";
 	private string noStrength = "Ugh.. This is bound with some kind of magic";
 	private string noMagic = "No magic is powerful enought to lift this";
+	private string reset = "press 'U' to reset level";
 
 	private string text = "";
 
@@ -82,6 +84,8 @@ public class TextBubble : MonoBehaviour
 			this.text = noMagic;
 		else if (set == setText.noStr)
 			this.text = noStrength;
+		else if (set == setText.reset)
+			this.text = reset;
 
 		TextMeshPro textMesh = this.transform.Find("text").GetComponent<TextMeshPro>();
 		textMesh.text = this.text;
