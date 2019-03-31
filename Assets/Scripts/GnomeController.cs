@@ -20,10 +20,12 @@ public class GnomeController : MonoBehaviour
     private bool isGrounded;
 	private float ychange = 1;
     public GameObject deathAnim;
+	public GameObject chatBubble;
+	private bool helpChat = true;
 
 
 
-    public Rigidbody2D getRigid()
+	public Rigidbody2D getRigid()
     {
         return rigid;
     }
@@ -332,8 +334,9 @@ public class GnomeController : MonoBehaviour
                     else if (touchingBox.BoxType == BoxScript.BoxTypes.steel)
                     {
                         Debug.Log("Cannot pick up steel");
-                        //todo: add visual feedback that cube cant be picked up
-                    }
+						TextBubble bubble = chatBubble.GetComponent<TextBubble>();
+						bubble.setTextBubble(TextBubble.setText.noMag);
+					}
                     else if (touchingBox.BoxType == BoxScript.BoxTypes.magic)
                     {
                         floatingBox = touchingBox;
@@ -360,11 +363,16 @@ public class GnomeController : MonoBehaviour
 						collider.offset = new Vector2(0, -0.05f);
 						collider.size = new Vector2(1, 1.1f);
 						//floatingBox.transform.position = new Vector3(floatingBox.transform.position.x, floatingBox.transform.position.y + 0.1f, floatingBox.transform.position.z);
-						//todo: add visual feedback that he needs help
 						if (floatingBox.ogreHolding)
 						{
 							floatingBox.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 							floatingBox.rb.mass = 1;
+						}
+						else if(helpChat)
+						{
+							TextBubble bubble = chatBubble.GetComponent<TextBubble>();
+							bubble.setTextBubble(TextBubble.setText.help);
+							helpChat = false;
 						}
 					}
                 }
