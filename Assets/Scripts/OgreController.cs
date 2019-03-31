@@ -19,6 +19,8 @@ public class OgreController : MonoBehaviour
 	private bool facingLeft = false;
     private float fromFloatingBox;
     public GameObject deathAnim;
+	public GameObject chatBubble;
+	private bool helpChat = true;
 
     private enum grabSide
     {
@@ -308,8 +310,9 @@ public class OgreController : MonoBehaviour
                 else if(touchingBox.BoxType == BoxScript.BoxTypes.magic)
                 {
                     Debug.Log("Cannot pick up magic");
-                    //todo: add visual feedback that cube cant be picked up
-                }
+					TextBubble bubble = chatBubble.GetComponent<TextBubble>();
+					bubble.setTextBubble(TextBubble.setText.noStr);
+				}
                 else if(touchingBox.BoxType == BoxScript.BoxTypes.led)
                 {
                     Debug.Log("Needs help to move this");
@@ -326,9 +329,14 @@ public class OgreController : MonoBehaviour
 					{
 						holdingBox.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 						holdingBox.rb.mass = 1;
-						
+
 					}
-                    //todo: add visual feedback that he needs help
+					else if (helpChat)
+					{
+						TextBubble bubble = chatBubble.GetComponent<TextBubble>();
+						bubble.setTextBubble(TextBubble.setText.help);
+						helpChat = false;
+					}
                 }
             }
         }
