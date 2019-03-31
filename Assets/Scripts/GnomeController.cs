@@ -33,6 +33,15 @@ public class GnomeController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        ignoreCollision();
+        rigid = this.GetComponent<Rigidbody2D>();
+		animator = GetComponent<Animator>();
+        rigid = this.GetComponent<Rigidbody2D>();
+		animator = GetComponent<Animator>();
+	}
+
+    public void ignoreCollision()
+    {
         foreach (Collider2D col1 in FindObjectOfType<OgreController>().GetComponents<Collider2D>())
         {
             foreach (Collider2D col2 in this.GetComponents<Collider2D>())
@@ -40,12 +49,10 @@ public class GnomeController : MonoBehaviour
                 Physics2D.IgnoreCollision(col1, col2);
             }
         }
-        rigid = this.GetComponent<Rigidbody2D>();
-		animator = GetComponent<Animator>();
-	}
+    }
 
-    // Update is called once per frame
-    void Update()
+// Update is called once per frame
+void Update()
     {
 		if (floatingBox != null)
 		{
@@ -277,6 +284,10 @@ public class GnomeController : MonoBehaviour
         }
     }
 
+    public void nullTouchingBox() {
+        touchingBox = null;
+    }
+
     public void grabClosest(bool pressActivate)
     {
         if (touchingBox)
@@ -312,7 +323,9 @@ public class GnomeController : MonoBehaviour
             floatingBox.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 			floatingBox = null;
             nextPressWillDrop = false;
-            
+            if(touchingBox != null) {
+                touchingBox = null;
+            }
         }
 
         if(!holdingABox)
