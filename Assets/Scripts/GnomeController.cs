@@ -249,11 +249,14 @@ void Update()
             movementSpeed = 100;
         }
         else if(collision.gameObject.tag == "Box")
-        {
-            GameObject anim = Instantiate(deathAnim);
+		{
+			TextBubble bubble = chatBubble.GetComponent<TextBubble>();
+			bubble.setTextBubble(TextBubble.setText.reset);
+			GameObject anim = Instantiate(deathAnim);
             anim.transform.position = this.transform.position + Vector3.up * 1;
             this.gameObject.SetActive(false);
-        }
+
+		}
     }
 
     void OnTriggerExit2D(Collider2D collision)

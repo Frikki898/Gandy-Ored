@@ -223,10 +223,15 @@ public class OgreController : MonoBehaviour
     {
         if (collision.gameObject.tag == "Box")
         {
-            GameObject anim = Instantiate(deathAnim);
+			TextBubble bubble = chatBubble.GetComponent<TextBubble>();
+			bubble.setTextBubble(TextBubble.setText.reset);
+
+			GameObject anim = Instantiate(deathAnim);
             anim.transform.position = this.transform.position + Vector3.up * 2;
             this.gameObject.SetActive(false);
-        }
+
+			
+		}
     }
 
     void OnCollisionEnter2D(Collision2D collision)
