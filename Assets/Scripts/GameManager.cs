@@ -90,9 +90,11 @@ public class GameManager : MonoBehaviour
 		camera.transform.position = cameraPosition;
 
 		GnomeController gc = gnome.GetComponent<GnomeController>();
+        gc.gameObject.SetActive(true);
 		gc.grabClosest(true);
 		OgreController oc = ogre.GetComponent<OgreController>();
-		oc.grabClosest();
+        oc.gameObject.SetActive(true);
+        oc.grabClosest();
 
         Debug.Log(resetableObjects.Length);
 
