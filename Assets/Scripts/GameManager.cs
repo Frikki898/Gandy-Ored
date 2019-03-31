@@ -92,9 +92,11 @@ public class GameManager : MonoBehaviour
 		GnomeController gc = gnome.GetComponent<GnomeController>();
         gc.gameObject.SetActive(true);
 		gc.grabClosest(true);
+        gc.ignoreCollision();
 		OgreController oc = ogre.GetComponent<OgreController>();
         oc.gameObject.SetActive(true);
         oc.grabClosest();
+        oc.ignoreCollision();
 
         Debug.Log(resetableObjects.Length);
 

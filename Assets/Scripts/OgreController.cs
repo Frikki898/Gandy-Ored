@@ -36,18 +36,23 @@ public class OgreController : MonoBehaviour
     {
 		transform.eulerAngles = new Vector2(0, 100);
 
-        foreach(Collider2D col1 in FindObjectOfType<GnomeController>().GetComponents<Collider2D>())
+        ignoreCollision();
+		
+		animator = GetComponent<Animator>();
+		rigid = this.GetComponent<Rigidbody2D>();
+        movementSpeed = runSpeed;
+        rigid.centerOfMass = Vector3.zero;
+    }
+
+    public void ignoreCollision()
+    {
+        foreach (Collider2D col1 in FindObjectOfType<GnomeController>().GetComponents<Collider2D>())
         {
             foreach (Collider2D col2 in this.GetComponents<Collider2D>())
             {
                 Physics2D.IgnoreCollision(col1, col2);
             }
         }
-		
-		animator = GetComponent<Animator>();
-		rigid = this.GetComponent<Rigidbody2D>();
-        movementSpeed = runSpeed;
-        rigid.centerOfMass = Vector3.zero;
     }
 
     // Update is called once per frame
