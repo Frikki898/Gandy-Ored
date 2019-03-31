@@ -76,7 +76,7 @@ GameObject:
   - component: {fileID: 4523884601416389471}
   - component: {fileID: 390634265987510885}
   m_Layer: 0
-  m_Name: ogre 1
+  m_Name: Ogre
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -182,6 +182,7 @@ MonoBehaviour:
   movementSpeed: 0
   runSpeed: 180
   carrySpeed: 150
+  deathAnim: {fileID: 0}
 --- !u!1 &4523884601438003079
 GameObject:
   m_ObjectHideFlags: 0
