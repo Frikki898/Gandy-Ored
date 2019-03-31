@@ -84,17 +84,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8fcf0eb4408c3445acb8a42159c220b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectLevel: 0
   canExit: 1
-  transactionSpeed: 0
-  usingSystem: 1
-  newXpos: 0
-  level1: {fileID: 0}
-  level2: {fileID: 0}
-  level3: {fileID: 0}
+  transactionSpeed: 1.5
+  newXpos: -56.76
   cam: {fileID: 0}
-  haltingCollider: {fileID: 0}
-  exitCollider: {fileID: 0}
+  haltingCollider: {fileID: 1662071101296212670}
+  exitCollider: {fileID: 70751693816093412}
 --- !u!61 &7855921485811880873
 BoxCollider2D:
   m_ObjectHideFlags: 0
