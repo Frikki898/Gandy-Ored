@@ -66,10 +66,16 @@ public class TextBubble : MonoBehaviour
 		}
 		else if(setPlayerTo == setPlayer.gnome)
 		{
-			pos = GameObject.Find("gnome").transform.position;
-			pos.x += 1.8f;
-			pos.y += 3.6f;
-			pos.z -= 10;
+            var bla = GameObject.Find("gnome");
+            if(bla)
+            {
+                pos = bla.transform.position;
+
+                pos.x += 1.8f;
+                pos.y += 3.6f;
+                pos.z -= 10;
+            }
+            
 		}
 
 		this.transform.position = pos;
