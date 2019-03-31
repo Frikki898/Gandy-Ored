@@ -218,7 +218,7 @@ public class OgreController : MonoBehaviour
         {
             GameObject anim = Instantiate(deathAnim);
             anim.transform.position = this.transform.position + Vector3.up * 2;
-            Destroy(this.gameObject);
+            this.gameObject.SetActive(false);
         }
     }
 
