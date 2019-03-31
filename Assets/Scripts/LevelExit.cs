@@ -110,6 +110,7 @@ public class LevelExit : MonoBehaviour
 		//{
 		if (exiting)
 		{
+
 			haltingCollider.SetActive(true);
 			exitCollider.SetActive(false);
 
@@ -129,6 +130,10 @@ public class LevelExit : MonoBehaviour
 				//GetComponent<LevelExit>().enabled = false;
 			}
 		}
+        if(!exiting)
+        {
+
+        }
 		//}
 	}
 

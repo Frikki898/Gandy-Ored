@@ -243,7 +243,7 @@ public class GnomeController : MonoBehaviour
         {
             GameObject anim = Instantiate(deathAnim);
             anim.transform.position = this.transform.position + Vector3.up * 1;
-            Destroy(this.gameObject);
+            this.gameObject.SetActive(false);
         }
     }
 

@@ -76,7 +76,7 @@ GameObject:
   - component: {fileID: 4523884601416389471}
   - component: {fileID: 390634265987510885}
   m_Layer: 0
-  m_Name: ogre 1
+  m_Name: Ogre
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -90,7 +90,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4523884601438003077}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -19.44, y: -7.24, z: 1.69}
+  m_LocalPosition: {x: -19.44, y: -7.24, z: 0.83}
   m_LocalScale: {x: 0.780597, y: 0.780597, z: 0.780597}
   m_Children:
   - {fileID: 4523884601438225377}
@@ -182,6 +182,7 @@ MonoBehaviour:
   movementSpeed: 0
   runSpeed: 180
   carrySpeed: 150
+  deathAnim: {fileID: 0}
 --- !u!1 &4523884601438003079
 GameObject:
   m_ObjectHideFlags: 0
