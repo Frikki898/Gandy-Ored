@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
 
 	public KeyCode resetKey;
 	public KeyCode hardResetKey;
+    public GameObject Game;
+    public GameObject UI;
 
 	private int level = 0;
 
@@ -19,6 +21,7 @@ public class GameManager : MonoBehaviour
 	private GameObject ogre;
 	private GameObject gnome;
 	private GameObject camera;
+    private bool MenuOpen = true;
 
 	private Vector3[] objectsPosition;
 	// Start is called before the first frame update
@@ -46,6 +49,13 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            if(MenuOpen)
+            {
+                openMenu();
+            }
+        }
 		if (Input.GetKeyDown(resetKey))
 		{
 			resetLevel();
@@ -56,11 +66,25 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
+    void openMenu()
+    {
+        Game.SetActive(false);
+        UI.SetActive(true);
+    }
+
+    public void closeMenu()
+    {
+        Game.SetActive(true);
+        UI.SetActive(false);
+    }
+
+    public void ShutDown()
+    {
+        Application.Quit();
+    }
+
 	void resetLevel()
 	{
-		
-
-		
 		gnome.transform.position = gnomeResetPositions;
 		ogre.transform.position = ogreResetPositions;
 		camera.transform.position = cameraPosition;
