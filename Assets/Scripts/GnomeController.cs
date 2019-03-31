@@ -47,7 +47,14 @@ public class GnomeController : MonoBehaviour
                 Physics2D.IgnoreCollision(col1, col2);
             }
         }
+<<<<<<< HEAD
     }
+=======
+        rigid = this.GetComponent<Rigidbody2D>();
+		animator = GetComponent<Animator>();
+	}
+    
+>>>>>>> 925678ad022349362b88a3f1ec4983d2bab2c4d1
 
     // Update is called once per frame
     void Update()
@@ -282,6 +289,10 @@ public class GnomeController : MonoBehaviour
         }
     }
 
+    public void nullTouchingBox() {
+        touchingBox = null;
+    }
+
     public void grabClosest(bool pressActivate)
     {
         if (touchingBox)
@@ -317,7 +328,9 @@ public class GnomeController : MonoBehaviour
             floatingBox.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 			floatingBox = null;
             nextPressWillDrop = false;
-            
+            if(touchingBox != null) {
+                touchingBox = null;
+            }
         }
 
         if(!holdingABox)

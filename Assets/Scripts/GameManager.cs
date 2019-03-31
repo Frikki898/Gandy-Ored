@@ -90,6 +90,7 @@ public class GameManager : MonoBehaviour
 		camera.transform.position = cameraPosition;
 
 		GnomeController gc = gnome.GetComponent<GnomeController>();
+		gc.nullTouchingBox();
         gc.gameObject.SetActive(true);
 		gc.grabClosest(true);
         gc.ignoreCollision();
