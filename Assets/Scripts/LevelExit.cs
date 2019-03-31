@@ -19,8 +19,10 @@ public class LevelExit : MonoBehaviour
 	private bool ogreExit = false;
 	private bool exiting = false;
 	private bool canMoveCamera = true;
+    private bool firstTime;
 
-	private GameObject ogre = null;
+
+    private GameObject ogre = null;
 	private GameObject gnome = null;
 	private GameManager gameManager;
 
@@ -110,20 +112,25 @@ public class LevelExit : MonoBehaviour
 		//{
 		if (exiting)
 		{
-
 			haltingCollider.SetActive(true);
 			exitCollider.SetActive(false);
 
 			newCamPosition = cam.transform.position;
 			newCamPosition.x = newXpos;
 
-			if (canMoveCamera)
+            if (firstTime)
+            {
+                firstTime = false;
+                setNextLevel();
+            }
+
+            if (canMoveCamera)
 				cam.transform.position = Vector3.Lerp(cam.transform.position, newCamPosition, transactionSpeed * Time.deltaTime);
 
 			if (newCamPosition.x - cam.transform.position.x < 0.08)
 			{
-				if(canMoveCamera)
-					setNextLevel();
+				//if(canMoveCamera)
+					
 
 				canMoveCamera = false;
 				//Debug.Log("shutting down");
@@ -132,7 +139,8 @@ public class LevelExit : MonoBehaviour
 		}
         if(!exiting)
         {
-
+            firstTime = true;
+            Debug.Log("ASDF");
         }
 		//}
 	}
