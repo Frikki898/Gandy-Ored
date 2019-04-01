@@ -65,7 +65,7 @@ public class TextBubble : MonoBehaviour
                 pos = bla.transform.position;
 
                 pos.x += 1.8f;
-                pos.y += 3.6f;
+                pos.y += 5.3f;
                 pos.z -= 10;
             }
         }
